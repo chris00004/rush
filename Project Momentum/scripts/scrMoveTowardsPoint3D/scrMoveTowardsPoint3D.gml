@@ -19,14 +19,20 @@ function scrMoveTowardsPoint3D(targetX, targetY, targetZ, speed) {
 	xspd=dirX * speed;
 	yspd=dirY * speed;
 	zspd=dirZ * speed;
-	/*
-    x += dirX * speed;
-    y += dirY * speed;
-    z += dirZ * speed;*/
+
 
     // Ensure the player doesn't overshoot the target
+	
+	if (distance<objPlayer.currentSpeed)
+	{
+		x = targetX;
+		y = targetY;
+		z = targetZ;
+	}
+	objPlayer.connectTarget = true;
+	
+	/*
     if (abs(targetX - x) < speed) x = targetX;
     if (abs(targetY - y) < speed) y = targetY;
-    if (abs(targetZ - z) < speed) z = targetZ;
-	objPlayer.connectTarget = true;
+    if (abs(targetZ - z) < speed) z = targetZ;*/
 }

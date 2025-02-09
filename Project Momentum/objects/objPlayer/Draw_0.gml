@@ -1,4 +1,4 @@
-if (playerState != PlayerState.Dead) && (playerState != PlayerState.ActionHookLine)
+if (playerState != PlayerState.Dead)
 {
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
 		if (inputRight && z==zFloor) draw_sprite(sprFlameRunR, animFrameRun, x, y+z);
@@ -47,9 +47,12 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y-6,$"X_SPD: {xspd}");
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
-draw_text(x+24,y-6,momentumLoss);
+draw_text(x+24,y-6,currentSpeed);
 draw_text(x+24,y+6,xspd);
 draw_text(x+24,y+18,maxSpeedNormal);
+
+draw_set_color(c_red)
+if (godMode==1) draw_text(x-20,y-56+z,"[GOD MODE]\nSPACE - ascend\nSHIFT - descend");
 
 
 

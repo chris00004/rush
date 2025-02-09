@@ -1,6 +1,53 @@
-//audio_play_sound(sndTestStageMusic, 1, true);
+///ENUM PlayerState
+enum PlayerState
+{
+	Normal,
+	Dead,
+	HomeIn,
+	AttachToTarget,
+	Sliding,
+	Stomping,
+	QuickStep,
+	BasicAttack,
+	EnemyBounce,
+	DialogueNPC,
+	Launcher, //launches enemy up in the air (low damage, allows juggling)
+	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
+	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
+	Grab, //
+	BackOff,	
+	Parry,
+	ActionDashPanel,
+	ActionDashRamp,
+	ActionSpringBoard,
+	ActionHookLine,
+	StageEnd,
+	GodMode
+}
 
-inputDirection = point_direction(0,0,0,0);
+enum PlayerAnimationDirection
+{
+	Up,
+	Down,
+	Left,
+	Right
+}
+
+
+enum AttackType
+{
+	Punch0,	
+	Punch1,
+	Kick,	
+	Launcher, //launches enemy up in the air (low damage, allows juggling)
+	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
+	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
+	Grab, //
+	BackOff,	//
+	
+}
+
+//audio_play_sound(sndTestStageMusic, 1, true);
 
 xspd=0;
 yspd=0;
@@ -18,10 +65,8 @@ zFloorNext = 0;
 zTemp = 0;
 
 jumpSpd = -4; //-4
-
 grav=0.25;
 gravNormal = 0.25;
-dir = 0;
 
 //momentum
 landed = true;
@@ -47,8 +92,6 @@ decceleration = 0.2; //0.12
 deccelerationBase = 0.2;
 maxSpeedNormal = 2.5;
 runSpd = 2.5;
-lastDirPressed = 0;
-sprite_index = sprPlayerIdleB;
 image_index=2;
 
 //animation
@@ -81,6 +124,7 @@ lastPosY = y;
 lastPosZ = -96;
 alarmRespawn = 40;
 
+//floor and pits
 abovePit = false;
 grounded = true;
 
@@ -93,11 +137,9 @@ closestTargetDistance = 99999999;
 closestTarget = pointer_null;
 tX=0;
 tY=0;
+tZ=0;
 alarmAttachToTarget = 30;
-attachSpd = 0;
-attachSpdZ = 0;
 attachSide = 0;
-inPriorityRange = false;
 
 //hookLine
 hookLineFalling = false;
@@ -107,10 +149,6 @@ attackBuffer = -1;
 attackType = 0;
 alarmAttack = 12;
 damage = 1;
-
-//quickstep
-quickStepStartingX = x;
-quickStepDirection = 0;
 
 //moving plat
 movingPlatLock=false;
@@ -141,6 +179,9 @@ speedScale = 0;
 
 //NPC
 characterNPC = 0;
+
+//god mode
+godMode=-1;
 
 
 

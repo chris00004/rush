@@ -1,50 +1,4 @@
-///ENUM PlayerState
-enum PlayerState
-{
-	Normal,
-	Dead,
-	HomeIn,
-	AttachToTarget,
-	Sliding,
-	Stomping,
-	QuickStep,
-	BasicAttack,
-	EnemyBounce,
-	DialogueNPC,
-	Launcher, //launches enemy up in the air (low damage, allows juggling)
-	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
-	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
-	Grab, //
-	BackOff,	
-	Parry,
-	ActionDashPanel,
-	ActionDashRamp,
-	ActionSpringBoard,
-	ActionHookLine,
-	StageEnd,
-}
 
-enum PlayerAnimationDirection
-{
-	Up,
-	Down,
-	Left,
-	Right
-}
-
-
-enum AttackType
-{
-	Punch0,	
-	Punch1,
-	Kick,	
-	Launcher, //launches enemy up in the air (low damage, allows juggling)
-	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
-	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
-	Grab, //
-	BackOff,	//
-	
-}
 
 
 ///----[ INPUTS ]---------------------------------------------------------------------------------------------
@@ -52,6 +6,11 @@ enum AttackType
 scrLoadInputsPlayer();
 
 ///----[ STATES ]-------------------------------------------------------------------------------------------------------------------------------------------
+
+//god mode
+if (keyboard_check_pressed(ord("G"))) godMode *=-1;
+if (godMode==1) playerState=PlayerState.GodMode;
+if (playerState==PlayerState.GodMode && godMode == -1) playerState = PlayerState.Normal;
 
 // Calculate current speed
 currentSpeed = sqrt(sqr(xspd) + sqr(yspd));
@@ -76,6 +35,7 @@ if (landed && playerState == PlayerState.Normal)
 //lose momentum
 if (momentumLoss)
 {
+	//if spd greater than base spd, decrease to base spd
 	if (maxSpeedNormal!=2.5)
 	{
 		maxSpeedNormal -= 0.12;
@@ -88,15 +48,22 @@ if (momentumLoss)
 	}
 }
 
-
+//GOD MODE
+if (playerState == PlayerState.GodMode)
+{
+	grav = 0;
+	zspd=0;
+	maxSpeedNormal=8;
+	if (keyboard_check(vk_space)) z-=2;
+	if (keyboard_check(vk_shift)) z+=2;
+	if (z>-12) z =-12;
+}
 
 //NORMAL STATE
 if (playerState == PlayerState.Normal)
 {	
-	hspeed = 0;
-	vspeed = 0;
 	grav = gravNormal;
-	animYPosActual = false;
+	//animYPosActual = false;
 	
 	//set state to stomping
 	if (!grounded)
@@ -149,11 +116,13 @@ if (playerState == PlayerState.Sliding)
 //DEAD STATE
 if (playerState == PlayerState.Dead)
 {
-	hspeed=0;
-	vspeed=0;
 	xspd = 0;
 	yspd = 0;
+	
+	//respawn alarm
 	alarmRespawn--;
+	
+	//set up variables for respawn
 	if (alarmRespawn<0)
 	{
 		x = lastPosX;
@@ -163,7 +132,6 @@ if (playerState == PlayerState.Dead)
 		inputLock=false;
 		movementLock = false;
 		playerState = PlayerState.Normal;
-		//boostMeter = boostMeterBase;
 	}
 }
 
@@ -229,10 +197,6 @@ if (playerState == PlayerState.HomeIn)
 		zspd = -5;
 		movementLock = false;
 		playerState = PlayerState.Normal;
-		//xspd=xspdReturned;
-		//yspd=yspdReturned;
-		//xspdReturned=0;
-		//yspdReturned=0;
 	}
 }
 
@@ -335,37 +299,6 @@ if (playerState == PlayerState.AttachToTarget)
 		alarmAttachToTarget = 30;
 		movementLock = false;
 		playerState = PlayerState.Normal;
-	}
-}
-
-
-
-//QUICK STEP STATE
-if (playerState = PlayerState.QuickStep)
-{
-	
-	movementLock=true;
-	if (quickStepDirection==1)
-	{
-		xspd = 6;
-		if (x>=quickStepStartingX+32)
-		{
-			xspd=0;
-			x = quickStepStartingX+32;
-			movementLock = false;
-			playerState = PlayerState.Normal;
-		}
-	}
-	else
-	{
-		xspd = -6;
-		if (x<=quickStepStartingX-32)
-		{
-			xspd=0;
-			x = quickStepStartingX-32;
-			movementLock = false;
-			playerState = PlayerState.Normal;
-		}
 	}
 }
 
@@ -578,7 +511,6 @@ else
 //ACTION HOOK LINE
 if (playerState == PlayerState.ActionHookLine)
 {
-	hookLineFalling = true;
 	movementLock = true;
 	if (inputJump)
 	{
@@ -761,48 +693,6 @@ if (z+zspd>zFloor)
 //Z MOVEMENT
 z+=zspd;
 
-///----[ BOOSTING ]----------------------------------------------------------------------------------------------
-/*
-if (!boosting) 
-{
-	boostMeter+=0.5;
-}
-if (boostMeter>boostMeterBase) boostMeter=boostMeterBase;
-if (boostRecovery && boostMeter>100) boostRecovery=false;
-
-if (inputBoost && grounded && !boostRecovery && (xspd!=0 || yspd!=0) && (playerState == PlayerState.Normal || playerState == PlayerState.ActionDashPanel)) boosting = true;
-else if ((!inputBoost || (xspd==0 && yspd==0))) boosting = false;
-
-if (boosting)
-{
-	//decrease boost meter
-	if (xspd!=0 || yspd!=0) boostMeter--;
-	if (boostMeter<0) 
-	{
-		boostMeter=0;
-		boostRecovery=true;
-		boosting=false;
-	}
-	if (playerState !=PlayerState.Normal && playerState !=PlayerState.ActionDashPanel) boosting = false;
-	//set max speed
-	if (maxSpeedNormal!=boostSpd)
-	{
-		if (grounded) maxSpeedNormal-=acceleration/1.5;
-		else maxSpeedNormal-=acceleration/3;
-	if (maxSpeedNormal<boostSpd) maxSpeedNormal = boostSpd;
-	}
-}
-
-//reset back to normal speed
-if ((!boosting) && maxSpeedNormal!=runSpd)
-{
-	if (grounded) maxSpeedNormal-=acceleration/1.5;
-	else maxSpeedNormal-=acceleration/3;
-	
-	if (maxSpeedNormal<=runSpd) maxSpeedNormal = runSpd;
-}
-*/
-
 ///----[ WALL COLLISION ]--------------------------------------------------------------------------------------------
 
 // WALL COLLISION X
@@ -845,7 +735,7 @@ if (place_meeting(x,y,objDashRampHorizontal) && z>=-4) playerState = PlayerState
 if (place_meeting(x,y,objSpringBoard) && z>=-6) playerState = PlayerState.ActionSpringBoard;
 
 //handle hookLine
-if (place_meeting(x,y,objHook)) && (playerState == PlayerState.AttachToTarget) playerState = PlayerState.ActionHookLine;
+if (place_meeting(x,y,objCrane)) && (playerState == PlayerState.AttachToTarget) playerState = PlayerState.ActionHookLine;
 
 //handle goal sign
 if (place_meeting(x,y,objGoalSign)) playerState = PlayerState.StageEnd;
@@ -853,11 +743,11 @@ if (place_meeting(x,y,objGoalSign)) playerState = PlayerState.StageEnd;
 //handle dialogue with NPC
 if (instance_exists(objNPC))
 {
-if (objNPC.inPlayerRange && inputActionSecondary && playerState != PlayerState.DialogueNPC) 
-{
-	objControllerNPCDiaglogue.active = true;
-	playerState = PlayerState.DialogueNPC;
-}
+	if (objNPC.inPlayerRange && inputActionSecondary && playerState != PlayerState.DialogueNPC) 
+	{
+		objControllerNPCDiaglogue.active = true;
+		playerState = PlayerState.DialogueNPC;
+	}
 }
 }
 
@@ -878,35 +768,3 @@ if (alarmAnimSpeedRun<0)
 	if (currentSpeed<3)  alarmAnimSpeedRun = 4;
 	else alarmAnimSpeedRun = 4-(currentSpeed/10);
 }
-
-//if spd>3
-//animspd = 4-(spd/12)
-
-
-/*
-//check last direction pressed
-if (keyRight) lastDirPressed = "R";
-if (keyLeft) lastDirPressed = "L";
-if (keyUp) lastDirPressed = "UP";
-if (keyDown) lastDirPressed = "DOWN";
-
-if (xspd>0 && keyRight) image_xscale = 1;
-else if (xspd<0 && keyLeft) image_xscale = -1;
-
-if (state=="normal")
-{
-if (keyRight || keyLeft) sprite_index = sprPlayerRunR;
-if (keyUp) sprite_index = sprPlayerRunB;
-if (keyDown) sprite_index = sprPlayerRunF;
-if ((keyRight && keyUp) || (keyLeft && keyUp)) sprite_index = sprPlayerRunBR;
-if ((keyRight && keyDown) || (keyLeft && keyDown)) sprite_index = sprPlayerRunFR;
-if (xspd==0 && yspd==0) 
-{
-	if (sprite_index!=sprPlayerIdleB && sprite_index!=sprPlayerIdleF && sprite_index!=sprPlayerIdleR) image_index =0;
-	if (lastDirPressed == "DOWN") sprite_index=sprPlayerIdleF;
-	else if (lastDirPressed == "UP") sprite_index=sprPlayerIdleB;
-	else if (lastDirPressed == "L" || lastDirPressed == "R") sprite_index=sprPlayerIdleR;
-	if (sprite_index==sprPlayerIdleB || sprite_index==sprPlayerIdleF || sprite_index==sprPlayerIdleR) && (image_index>1) image_index =2;
-}
-}
-*/
