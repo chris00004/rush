@@ -25,7 +25,6 @@ targetAngle += 15;
 
 if (hp != pointer_null && hp<=0)
 {
-	//ds_list_delete(objPlayer.targetList, index);
 	active = false;
 }
 

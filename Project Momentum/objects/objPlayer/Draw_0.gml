@@ -1,8 +1,8 @@
 if (playerState != PlayerState.Dead)
 {
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
-		if (inputRight && z==zFloor) draw_sprite(sprFlameRunR, animFrameRun, x, y+z);
-		else if (inputLeft && z==zFloor) draw_sprite(sprFlameRunL, animFrameRun, x, y+z);
+		if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
+		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
 		else if (inputDown && z==zFloor) draw_sprite(sprFlameRunF, animFrameRun, x, y+z);
 		else if (inputUp && z==zFloor) draw_sprite(sprFlameRunB, animFrameRun, x, y+z);
 		else if (playerState == PlayerState.BasicAttack)
@@ -19,7 +19,7 @@ if (playerState != PlayerState.Dead)
 			}
 		}
 		else if (!grounded) draw_sprite(sprFlameJump, 1, x, y+z);
-		else draw_sprite(sprFlameIdleR, animFrameIdle, x, y+z);
+		else draw_sprite(sprXIdleRight, animFrameIdle, x, y+z);
 		
 		//boost icon
 		/*
@@ -47,9 +47,9 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y-6,$"X_SPD: {xspd}");
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
-draw_text(x+24,y-6,currentSpeed);
-draw_text(x+24,y+6,xspd);
-draw_text(x+24,y+18,maxSpeedNormal);
+draw_text(x+24,y-6,maxSpeedNormal);
+draw_text(x+24,y+6,currentSpeed);
+
 
 draw_set_color(c_red)
 if (godMode==1) draw_text(x-20,y-56+z,"[GOD MODE]\nSPACE - ascend\nSHIFT - descend");

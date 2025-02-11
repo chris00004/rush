@@ -30,9 +30,9 @@ function scrMoveTowardsPoint3D(targetX, targetY, targetZ, speed) {
 		z = targetZ;
 	}
 	objPlayer.connectTarget = true;
-	
 	/*
-    if (abs(targetX - x) < speed) x = targetX;
+	if (abs(targetX - x) < speed) x = targetX;
     if (abs(targetY - y) < speed) y = targetY;
-    if (abs(targetZ - z) < speed) z = targetZ;*/
+    if (abs(targetZ - z) < speed) z = targetZ;
+	*/
 }

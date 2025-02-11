@@ -52,7 +52,7 @@ switch(state)
 			objPlayer.y=y;
 			objPlayer.z=z+24;
 			objPlayer.yspd=0;
-			objPlayer.xspd=xspd*position;
+			//objPlayer.xspd=xspd*position;
 			objPlayer.zspd=0;
 		}
 	break;

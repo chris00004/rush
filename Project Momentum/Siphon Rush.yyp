@@ -234,6 +234,8 @@
     {"id":{"name":"sprWallA","path":"sprites/sprWallA/sprWallA.yy",},},
     {"id":{"name":"sprWallSide","path":"sprites/sprWallSide/sprWallSide.yy",},},
     {"id":{"name":"sprX","path":"sprites/sprX/sprX.yy",},},
+    {"id":{"name":"sprXIdleRight","path":"sprites/sprXIdleRight/sprXIdleRight.yy",},},
+    {"id":{"name":"sprXRunLeft","path":"sprites/sprXRunLeft/sprXRunLeft.yy",},},
     {"id":{"name":"sprXRunRight","path":"sprites/sprXRunRight/sprXRunRight.yy",},},
     {"id":{"name":"sprZipLockCollision","path":"sprites/sprZipLockCollision/sprZipLockCollision.yy",},},
     {"id":{"name":"sprZipLockGuardRails","path":"sprites/sprZipLockGuardRails/sprZipLockGuardRails.yy",},},

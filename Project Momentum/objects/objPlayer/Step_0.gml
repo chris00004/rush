@@ -170,11 +170,13 @@ if (playerState == PlayerState.HomeIn)
 		}
 		else maxSpeedNormal += 0.15;
 	}
+	
 	//increase players max speed
 	maxSpeedNormal += grappleSpd;
 	
 	//grapple speed
-	grappleSpd = 0.0175;
+	grappleSpd = 0.015;
+	
 	
 	if (closestTarget.targetType==1)
 	{
@@ -205,9 +207,10 @@ if (playerState == PlayerState.HomeIn)
 //ATTACH TO TARGET STATE
 if (playerState == PlayerState.AttachToTarget)
 {
+	xspd=0;
+	yspd=0;
+	zspd=0;
 	z=closestTarget.z;
-	hspeed = 0;
-	vspeed = 0;
 	if (closestTarget.targetType==1)
 	{
 		if (x<=tX) 
@@ -305,6 +308,8 @@ if (playerState == PlayerState.AttachToTarget)
 //PUNCHING STATE
 if (playerState == PlayerState.BasicAttack)
 {
+	alarmAttack--;
+
 	if (alarmAttack<34)
 	{
 		//attack 
@@ -366,7 +371,6 @@ if (playerState == PlayerState.BasicAttack)
 	}
 	
 	//end attack state, return to Normal state
-	alarmAttack--;
 	if (alarmAttack<0)
 	{
 		attackType=0;
