@@ -1,3 +1,12 @@
+enum EnemyState {
+	Normal,
+	Dead,
+	Attacking,
+	GottenHit,
+	OnTheGround,
+	JuggleState
+}
+
 xspd=0;
 yspd=0;
 zspd=0;
@@ -19,7 +28,7 @@ targetDisplacement = 24;
 targetType = 1; // 0 - single target location // 1 - can target left or right
 
 
-hp = 5;
+hp = 999;
 active = true;
 weak = false;
 isEnemy=true;
