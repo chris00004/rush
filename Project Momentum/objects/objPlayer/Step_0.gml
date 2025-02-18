@@ -77,6 +77,20 @@ if (playerState == PlayerState.Normal)
 		}
 	}
 	
+	//set state to punching
+	if (inputActionLeft) {
+		alarmAttack=0;
+		playerState = PlayerState.BasicAttack;
+		attackState = AttackType.Punch0;
+	}
+	
+	//sets state to kicking
+	else if (inputActionRight) {
+		alarmAttack=0;
+		playerState = PlayerState.BasicAttack;
+		attackState = AttackType.Kick;
+	}
+	
 	//set state to sliding
 	if (grounded)
 	{
@@ -255,7 +269,8 @@ if (playerState == PlayerState.AttachToTarget)
 		}
 	
 		//set state to BackOff
-		if (attachSide == 0 && inputActionLeft) || (attachSide == 1 && inputActionRight)
+		//Set to secondary right now as left and right are being used for attacks
+		if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
 		{
 			alarmAttachToTarget=30;
 			zspd = 2;
@@ -263,7 +278,7 @@ if (playerState == PlayerState.AttachToTarget)
 		}
 	
 		//set state to Parry (if attached to enemy)
-		if ((attachSide == 0 && inputActionRight) || (attachSide == 1 && inputActionLeft)) && (closestTarget.hp!=pointer_null)
+		if ((attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)) && (closestTarget.hp!=pointer_null)
 		{
 			alarmAttachToTarget=30;
 			playerState = PlayerState.Parry;
@@ -313,14 +328,24 @@ if (playerState == PlayerState.BasicAttack)
 	if (alarmAttack<34)
 	{
 		//attack 
-		if (inputAction)
+		//This is the punches started with the left bumper
+		if (inputActionLeft)
 		{
 			alarmAttack=40;
 			attackType++;
-			if (closestTarget.hp != pointer_null) closestTarget.hp-=damage;
+			//if (closestTarget.hp != pointer_null) closestTarget.hp-=damage;
 			
-			//reset attack types
-			if (attackType>4) attackType = 0;
+			
+			
+			if (attackState != AttackType.Punch0) {
+			attackState = AttackType.Punch0;	
+			}
+			else {
+			attackState = AttackType.Punch1;	
+			}
+			
+			/*//reset attack types
+			if (attackType>3) attackType = 0;
 			
 			//decide attack type
 			switch(attackType)
@@ -337,18 +362,28 @@ if (playerState == PlayerState.BasicAttack)
 				case 3:
 				attackState = AttackType.Punch1;
 				break;
-				case 4:
+			} */
+		}
+		//This is the kicks started with the left bumper
+		//As it is, if players press both at the same time punch will come out. I plan
+		//on changing this later to the burst move. 
+		else if (inputActionRight) {
+		alarmAttack=40;
+			attackType++;
+			//commented out as I assume we'll change how damage works later. 
+			//if (closestTarget.hp != pointer_null) closestTarget.hp-=damage;
+			
+			
 				attackState = AttackType.Kick;
-				break;
-			}
+				
 		}
 	}
 	
-	if (closestTarget.hp<1)
+	/*if (closestTarget.hp<1)
 	{
 		movementLock = false;
 		playerState = PlayerState.Normal;
-	}
+	} */
 	
 	//set state to stomping
 	if (!grounded)
@@ -363,7 +398,7 @@ if (playerState == PlayerState.BasicAttack)
 	}
 	
 	//set state to BackOff
-	if (attachSide == 0 && inputActionLeft) || (attachSide == 1 && inputActionRight)
+	if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
 	{
 		alarmAttachToTarget=30;
 		zspd = 2;
@@ -673,7 +708,7 @@ if ((!inputUp && !inputDown) || (inputUp && inputDown) || movementLock) && (play
 acceleration = maxSpeedNormal/8;
 
 //increases decceleration slowly as you get faster
-decceleration = 0.2 + (maxSpeedNormal/200);
+decceleration = 0.2 + (maxSpeedNormal/400);
 
 //JUMPING
 if (inputJump && grounded && !jumpLock && !charLock && !inputLock && playerState != PlayerState.Dead)
@@ -770,5 +805,5 @@ if (alarmAnimSpeedRun<0)
 {
 	animFrameRun++;
 	if (currentSpeed<3)  alarmAnimSpeedRun = 4;
-	else alarmAnimSpeedRun = 4-(currentSpeed/10);
+	else alarmAnimSpeedRun = 4-(currentSpeed/5);
 }

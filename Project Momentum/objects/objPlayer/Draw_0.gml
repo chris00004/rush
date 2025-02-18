@@ -9,11 +9,11 @@ if (playerState != PlayerState.Dead)
 		{
 			switch(attackState)
 			{
-				case AttackType.Punch0: draw_sprite(sprFlamePunch0R, 2, x, y+z)
+				case AttackType.Punch0: draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
 				break;
-				case AttackType.Punch1: draw_sprite(sprFlamePunch1R, 2, x, y+z)
+				case AttackType.Punch1: draw_sprite_ext(sprFlamePunch1R, 2, x, y+z, 1, 1, 0, c_red, 1);
 				break;
-				case AttackType.Kick: draw_sprite(sprFlamePunch1R, 0, x, y+z)
+				case AttackType.Kick: draw_sprite_ext(sprFlamePunch1R, 0, x, y+z, 1, 1, 0, c_blue, 1);
 				break;
 				
 			}

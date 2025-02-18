@@ -100,7 +100,7 @@ alarmAnimSpeedIdle = 6;
 alarmAnimSpeedRun = 4;
 animFrameIdle=0;
 animFrameRun=0;
-animDirection=0
+animDirection=0;
 
 
 //dash panel
