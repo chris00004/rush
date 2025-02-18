@@ -202,10 +202,11 @@ if (playerState == PlayerState.HomeIn)
 		 scrMoveTowardsPoint3D(tX,tY,tZ,maxSpeedNormal);
 	}
 	
+	/*
 	if (place_meeting(x,y,closestTarget)) && (z>closestTarget.z-2 && z<closestTarget.z+2) 
 	{
 		playerState = PlayerState.AttachToTarget;
-	}
+	}*/
 	
 	//jump out of grapple
 	if (inputJump)
