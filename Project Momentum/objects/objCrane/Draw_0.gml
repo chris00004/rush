@@ -28,7 +28,7 @@ draw_sprite_ext(sprCraneHook,0,x,y+z,1,1,0,c_white,1);
 draw_set_color(c_white);
 if (inPlayerRange && objPlayer.closestTarget == self)
 {
-	draw_line(x, y+z, objPlayer.x, objPlayer.y+objPlayer.z);
+	//draw_line(x, y+z, objPlayer.x, objPlayer.y+objPlayer.z);
 	draw_sprite_ext(sprTargetLockOn, targetFrame, x, y+z, 1, 1, targetAngle, c_white, 1);
 	if (objPlayer.playerState == PlayerState.AttachToTarget)
 	draw_sprite(sprTargetArrow, 0, x, y+z-sprite_height/3);

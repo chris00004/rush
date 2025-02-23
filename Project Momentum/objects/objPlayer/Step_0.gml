@@ -7,6 +7,7 @@ scrLoadInputsPlayer();
 
 ///----[ STATES ]-------------------------------------------------------------------------------------------------------------------------------------------
 
+if (maxSpeedNormal > 11) maxSpeedNormal = 11;
 //god mode
 if (keyboard_check_pressed(ord("G"))) godMode *=-1;
 if (godMode==1) playerState=PlayerState.GodMode;
@@ -51,6 +52,8 @@ if (momentumLoss)
 //GOD MODE
 if (playerState == PlayerState.GodMode)
 {
+	movementLock=false;
+	inputLock=false;
 	grav = 0;
 	zspd=0;
 	maxSpeedNormal=8;
@@ -261,20 +264,20 @@ if (playerState == PlayerState.AttachToTarget)
 			//grav = gravNormal;
 		}
 
+/*
 		//set state to Punching (if attached to enemy)
 		else if (inputAction && alarmAttachToTarget<26 && closestTarget.hp!=pointer_null)
 		{
 			alarmAttachToTarget=30;
 			alarmAttack=0;
 			playerState = PlayerState.BasicAttack;
-		}
+		}*/
 	
 		//set state to BackOff
 		//Set to secondary right now as left and right are being used for attacks
 		if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
 		{
 			alarmAttachToTarget=30;
-			zspd = 2;
 			playerState = PlayerState.BackOff;
 		}
 	
@@ -350,6 +353,7 @@ if (playerState == PlayerState.BasicAttack)
 			
 			//decide attack type
 			switch(attackType)
+			{
 			{
 				case 0:
 				attackState = AttackType.Punch0;
@@ -451,15 +455,18 @@ if (playerState == PlayerState.EnemyBounce)
 //BACKOFF STATE
 if (playerState == PlayerState.BackOff)
 {
+	if (maxSpeedNormal>5) maxSpeedNormal=5;
 	movementLock=true;
 	grav = gravNormal;
 	if (attachSide == 0)
 	{
 		xspd = -5;
+		
 	}
 	else
 	{
 		xspd = 5;
+		
 	}
 	//end backoff state, return to normal state
 	if (grounded) 
@@ -587,7 +594,7 @@ for (var i=0; i<ds_list_size(elevatedPlatformList); i++)
 }
 
 //ABOVE A PIT
-if (place_meeting(x,y+12,objFloor)) && (place_meeting(x,y+6,objFloor)) abovePit = false;
+if (place_meeting(x,y+12,objFloor)) && (place_meeting(x,y+4,objFloor)) abovePit = false;
 else abovePit = true;
 
 if (abovePit && z==zFloor && playerState != PlayerState.HomeIn 

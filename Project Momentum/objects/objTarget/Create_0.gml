@@ -31,3 +31,4 @@ enum ObjectType{
 }
 
 objectType=-1;
+angle=0;

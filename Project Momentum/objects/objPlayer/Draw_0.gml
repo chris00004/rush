@@ -3,8 +3,8 @@ if (playerState != PlayerState.Dead)
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
 		if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
-		else if (inputDown && z==zFloor) draw_sprite(sprFlameRunF, animFrameRun, x, y+z);
-		else if (inputUp && z==zFloor) draw_sprite(sprFlameRunB, animFrameRun, x, y+z);
+		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
+		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
 		else if (playerState == PlayerState.BasicAttack)
 		{
 			switch(attackState)
@@ -18,7 +18,7 @@ if (playerState != PlayerState.Dead)
 				
 			}
 		}
-		else if (!grounded) draw_sprite(sprFlameJump, 1, x, y+z);
+		else if (!grounded) draw_sprite(sprXFallRight, 0, x, y+z);
 		else draw_sprite(sprXIdleRight, animFrameIdle, x, y+z);
 		
 		//boost icon
@@ -31,6 +31,8 @@ else if (playerState == PlayerState.Dead)
 {
 	draw_sprite(sprPlayerDeathIcon, 0, x, y+zFloor+13);
 }
+
+//draw_sprite(sprPlayerHitBox,0,x,y);
 
 /*
 draw_text(x+24,y-30,$"X_SPD: {xspd}");
