@@ -179,14 +179,11 @@ if (playerState == PlayerState.HomeIn)
 	tY = closestTarget.y;
 	tZ = closestTarget.z;
 	
-	if (maxSpeedNormal<5)
+	if (maxSpeedNormal<6)
 	{
-		if (maxSpeedNormal+0.15>=5)
-		{
-			maxSpeedNormal=5
-		}
-		else maxSpeedNormal += 0.15;
+		homeInSpd=6;
 	}
+	else homeInSpd = maxSpeedNormal;
 	
 	//increase players max speed
 	maxSpeedNormal += grappleSpd;
@@ -197,12 +194,12 @@ if (playerState == PlayerState.HomeIn)
 	
 	if (closestTarget.targetType==1)
 	{
-		if (x<=tX) scrMoveTowardsPoint3D(tX-closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
-		else scrMoveTowardsPoint3D(tX+closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
+		if (x<=tX) scrMoveTowardsPoint3D(tX-closestTarget.targetDisplacement,tY,tZ,homeInSpd);
+		else scrMoveTowardsPoint3D(tX+closestTarget.targetDisplacement,tY,tZ,homeInSpd);
 	}
 	else if (closestTarget.targetType==0)
 	{
-		 scrMoveTowardsPoint3D(tX,tY,tZ,maxSpeedNormal);
+		 scrMoveTowardsPoint3D(tX,tY,tZ,homeInSpd);
 	}
 	
 	/*
@@ -211,12 +208,31 @@ if (playerState == PlayerState.HomeIn)
 		playerState = PlayerState.AttachToTarget;
 	}*/
 	
+	/*
 	//jump out of grapple
 	if (inputJump)
 	{
+		jumpOutGrapple=true;
+		if (maxSpeedNormal<6) grappleDeccel = 6-maxSpeedNormal;
 		zspd = -5;
 		movementLock = false;
 		playerState = PlayerState.Normal;
+	}*/
+	
+	if (inputJump) 
+	{
+		/*
+	    jumpOutGrapple = true;
+
+	    // Calculate burst of speed from the leftover difference
+	    if (maxSpeedNormal < 6) {
+	        grappleDeccel = 6 - maxSpeedNormal; // The extra speed gained
+	        currentSpeed = maxSpeedNormal + grappleDeccel; // Apply burst
+	    }*/
+
+	    zspd = -5;
+	    movementLock = false;
+	    playerState = PlayerState.Normal;
 	}
 }
 
@@ -657,11 +673,13 @@ if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead
 		// Calculate current speed
 		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));*/
 
+
 		//CAP SPEED
 		if (currentSpeed > maxSpeedNormal) 
 		{
 			//scale the speed 
 			speedScale = maxSpeedNormal / currentSpeed;
+
 			xspd *= speedScale;
 			yspd *= speedScale;
 		}

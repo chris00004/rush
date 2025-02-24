@@ -116,6 +116,9 @@ pY=0;
 targetObject=0;
 grappleSpd = 0;
 connectTarget=false;
+homeInSpd = 6;
+jumpOutGrapple=false;
+grappleDeccel=0;
 
 
 //respawn
@@ -149,6 +152,8 @@ attackBuffer = -1;
 attackType = 0;
 alarmAttack = 12;
 damage = 1;
+comboMultiplier = 0;
+
 
 //moving plat
 movingPlatLock=false;

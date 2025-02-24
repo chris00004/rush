@@ -50,7 +50,8 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
 draw_text(x+24,y-6,maxSpeedNormal);
-draw_text(x+24,y+6,playerState);
+draw_text(x+24,y+6,currentSpeed);
+draw_text(x+24,y+18,jumpOutGrapple);
 
 
 draw_set_color(c_red)
