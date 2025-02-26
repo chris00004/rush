@@ -1,7 +1,8 @@
 if (playerState != PlayerState.Dead)
 {
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
-		if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
+		if (playerState == PlayerState.Sliding) draw_sprite(sprAnimSlide, animFrameRun, x, y+z);
+		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
 		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
 		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
@@ -50,12 +51,14 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
 draw_text(x+24,y-6,maxSpeedNormal);
-draw_text(x+24,y+6,currentSpeed);
-draw_text(x+24,y+18,jumpOutGrapple);
+draw_text(x+24,y+6,movementDirection);
+draw_text(x+24,y+18,place_meeting(x,y,objSlideWallTrigger));
 
 
-draw_set_color(c_red)
+draw_set_color(c_red);
 if (godMode==1) draw_text(x-20,y-56+z,"[GOD MODE]\nSPACE - ascend\nSHIFT - descend");
+
+
 
 
 

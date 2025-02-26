@@ -74,9 +74,7 @@ if (playerState == PlayerState.Normal)
 		if (inputStomp)
 		{
 			playerState = PlayerState.Stomping;
-			xspd = 0;
-			yspd=0;
-			movementLock=true;
+			//movementLock=true;
 		}
 	}
 	
@@ -95,11 +93,12 @@ if (playerState == PlayerState.Normal)
 	}
 	
 	//set state to sliding
-	if (grounded)
+	if (grounded && currentSpeed>=2.5)
 	{
 		if (inputStomp)
 		{
 			playerState = PlayerState.Sliding;
+			alarmSliding = 45/(currentSpeed/(4*currentSpeed/3));
 			movementLock=true;
 		}	
 	}
@@ -122,12 +121,20 @@ if (playerState == PlayerState.Sliding)
 	momentumLoss=false;
 	alarmMomentumLoss = 1;
 	alarmSliding--;
-	if (alarmSliding<0) 
+
+
+	if (alarmSliding<0) && (!place_meeting(x,y,objSlideWallTrigger))
 	{
-		alarmSliding = 45;
+		alarmSliding = 45/currentSpeed;
 		playerState = PlayerState.Normal;
 		movementLock=false;
 	}
+	
+	if (place_meeting(x,y,objSlideWallTrigger))
+	{
+		jumpLock = true;
+	}
+	else jumpLock = false;
 }
 
 //DEAD STATE
@@ -155,8 +162,7 @@ if (playerState == PlayerState.Dead)
 //STOMPING STATE
 if (playerState == PlayerState.Stomping)
 {
-	xspd=0;
-	yspd=0;
+
 	zspd+=3.5;
 	if (grounded) 
 	{
@@ -295,9 +301,7 @@ if (playerState == PlayerState.AttachToTarget)
 			if (inputStomp)
 			{
 				playerState = PlayerState.Stomping;
-				xspd = 0;
-				yspd=0;
-				movementLock=true;
+				//movementLock=true;
 			}
 		}
 	}
@@ -397,9 +401,7 @@ if (playerState == PlayerState.BasicAttack)
 		if (inputStomp)
 		{
 			playerState = PlayerState.Stomping;
-			xspd = 0;
-			yspd=0;
-			movementLock=true;
+			//movementLock=true;
 		}
 	}
 	
@@ -439,9 +441,7 @@ if (playerState == PlayerState.EnemyBounce)
 		if (inputStomp)
 		{
 			playerState = PlayerState.Stomping;
-			xspd = 0;
-			yspd=0;
-			movementLock=true;
+			//movementLock=true;
 		}
 	}
 	
@@ -538,9 +538,7 @@ if (playerState == PlayerState.ActionDashRamp)
 		if (inputStomp)
 		{
 			playerState = PlayerState.Stomping;
-			xspd = 0;
-			yspd=0;
-			movementLock=true;
+			//movementLock=true;
 		}
 	}
 

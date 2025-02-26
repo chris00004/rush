@@ -116,10 +116,6 @@ pY=0;
 targetObject=0;
 grappleSpd = 0;
 connectTarget=false;
-homeInSpd = 6;
-jumpOutGrapple=false;
-grappleDeccel=0;
-
 
 //respawn
 lastPosX = x;

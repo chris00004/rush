@@ -59,4 +59,26 @@ draw_set_color(c_white)
 draw_text(camX+16,camY+1,string(minutes)+":"+string(seconds));
 }
 }
+
+// (X)
+if (objPlayer.inputActionHold) draw_set_color(c_red);
+else draw_set_color(c_white);
+draw_circle(camX+200,camY+164,6,false);
+// (B)
+if (objPlayer.inputStompHold) draw_set_color(c_red);
+else draw_set_color(c_white);
+draw_circle(camX+224,camY+164,6,false);
+// (Y)
+if (objPlayer.inputActionSecondaryHold) draw_set_color(c_red);
+else draw_set_color(c_white);
+draw_circle(camX+212,camY+152,6,false);
+// (A)
+if (objPlayer.inputJumpHold) draw_set_color(c_red);
+else draw_set_color(c_white);
+draw_circle(camX+212,camY+176,6,false);
+draw_set_color(c_grey);
+draw_circle(camX+132,camY+164,11,false);
+draw_set_color(c_white);
+draw_sprite_ext(sprTestCircle,objPlayer.inputUp || objPlayer.inputDown || objPlayer.inputRight
+|| objPlayer.inputLeft,camX+133,camY+165,1,1,objPlayer.movementDirection-90,c_white,1);
 }
