@@ -25,3 +25,7 @@ alpha = 0;
 
 seconds = 0;
 minutes = 0;
+
+gameFont = font_add_sprite_ext(sprGameFont, "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?-0123456789", true, 0);
+gameFontSmall = font_add_sprite_ext(sprGameFontSmall, "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?-0123456789", true, 0);
+draw_set_font(fntPlayerHUD);

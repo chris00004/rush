@@ -36,11 +36,11 @@ enum PlayerAnimationDirection
 
 enum AttackType
 {
-	Punch0,	
-	Punch1,
-	Kick,	
+	Idle,
+	Punch,
+	ReverseKick,	
 	Launcher, //launches enemy up in the air (low damage, allows juggling)
-	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
+	SlamStrike, //slams enemy down to the ground (high damage, high enemy recovery time)
 	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
 	Grab, //
 	BackOff,	//
@@ -78,6 +78,7 @@ alarmSliding = 120;
 
 //locks
 movementLock=false;
+alarmMovementLock=50;
 jumpLock=false;
 inputLock=false;
 charLock=false;
@@ -149,6 +150,10 @@ attackType = 0;
 alarmAttack = 12;
 damage = 1;
 comboMultiplier = 0;
+attackEnabled = false;
+actionsEnabled = true;
+heavyCharges = 0;
+lightAttackCount = 0;
 
 
 //moving plat

@@ -1,6 +1,3 @@
-
-
-
 ///----[ INPUTS ]---------------------------------------------------------------------------------------------
 
 scrLoadInputsPlayer();
@@ -67,6 +64,11 @@ if (playerState == PlayerState.Normal)
 {	
 	grav = gravNormal;
 	//animYPosActual = false;
+	alarmMovementLock--;
+	if (alarmMovementLock<0)
+	{
+		movementLock=false;
+	}
 	
 	//set state to stomping
 	if (!grounded)
@@ -77,7 +79,7 @@ if (playerState == PlayerState.Normal)
 			//movementLock=true;
 		}
 	}
-	
+	/*
 	//set state to punching
 	if (inputActionLeft) {
 		alarmAttack=0;
@@ -90,7 +92,7 @@ if (playerState == PlayerState.Normal)
 		alarmAttack=0;
 		playerState = PlayerState.BasicAttack;
 		attackState = AttackType.Kick;
-	}
+	}*/
 	
 	//set state to sliding
 	if (grounded && currentSpeed>=2.5)
@@ -203,24 +205,20 @@ if (playerState == PlayerState.HomeIn)
 	
 	if (closestTarget.targetType==1)
 	{
-		if (x<=tX) scrMoveTowardsPoint3D(tX-closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
-		else scrMoveTowardsPoint3D(tX+closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
+		if (x<=tX && !closestTarget.wallToLeft) scrMoveTowardsPoint3D(tX-closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
+		else if (!closestTarget.wallToRight) scrMoveTowardsPoint3D(tX+closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
+		
+		else if (x>tX && !closestTarget.wallToRight) scrMoveTowardsPoint3D(tX+closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
+		else if (!closestTarget.wallToLeft) scrMoveTowardsPoint3D(tX-closestTarget.targetDisplacement,tY,tZ,maxSpeedNormal);
 	}
 	else if (closestTarget.targetType==0)
 	{
 		 scrMoveTowardsPoint3D(tX,tY,tZ,maxSpeedNormal);
 	}
 	
-	/*
-	if (place_meeting(x,y,closestTarget)) && (z>closestTarget.z-2 && z<closestTarget.z+2) 
-	{
-		playerState = PlayerState.AttachToTarget;
-	}*/
-	
 	//jump out of grapple
 	if (inputJump)
 	{
-		jumpOutGrapple=true;
 		zspd = -5;
 		movementLock = false;
 		playerState = PlayerState.Normal;
@@ -232,10 +230,16 @@ if (playerState == PlayerState.HomeIn)
 //ATTACH TO TARGET STATE
 if (playerState == PlayerState.AttachToTarget)
 {
+	tX = closestTarget.x;
+	tY = closestTarget.y;
+	tZ = closestTarget.z;
+	
 	xspd=0;
 	yspd=0;
 	zspd=0;
-	z=closestTarget.z;
+	z=tZ;
+	y=tY;
+	
 	if (closestTarget.targetType==1)
 	{
 		if (x<=tX) 
@@ -271,29 +275,15 @@ if (playerState == PlayerState.AttachToTarget)
 			//grav = gravNormal;
 		}
 
-/*
 		//set state to Punching (if attached to enemy)
 		else if (inputAction && alarmAttachToTarget<26 && closestTarget.hp!=pointer_null)
 		{
-			alarmAttachToTarget=30;
-			alarmAttack=0;
+			alarmAttachToTarget=50;
+			alarmAttack=20;
+			attackEnabled=true;
 			playerState = PlayerState.BasicAttack;
-		}*/
-	
-		//set state to BackOff
-		//Set to secondary right now as left and right are being used for attacks
-		if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
-		{
-			alarmAttachToTarget=30;
-			playerState = PlayerState.BackOff;
 		}
-	
-		//set state to Parry (if attached to enemy)
-		if ((attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)) && (closestTarget.hp!=pointer_null)
-		{
-			alarmAttachToTarget=30;
-			playerState = PlayerState.Parry;
-		}
+
 		
 			//set state to stomping
 		if (!grounded && !closestTarget.weak)
@@ -304,19 +294,11 @@ if (playerState == PlayerState.AttachToTarget)
 				//movementLock=true;
 			}
 		}
-	}
-	
-	//OTHER OBJECT REALTED
-	else
-	{
-		if (closestTarget.objectType == ObjectType.TriMachine)
+		
+		if (inputJump)
 		{
-			if (alarmAttachToTarget<26)
-			{
-				playerState = PlayerState.EnemyBounce;
-				closestTarget.hp = 0;
-				zspd = -5;
-			}
+			playerState = PlayerState.Normal;
+			zspd=-5;
 		}
 	}
 	
@@ -329,99 +311,164 @@ if (playerState == PlayerState.AttachToTarget)
 	}
 }
 
-//PUNCHING STATE
+
+//ATTACK STATE
 if (playerState == PlayerState.BasicAttack)
 {
-	alarmAttack--;
+	alarmAttachToTarget--;
+	zspd=0;
+	z=closestTarget.z;
 
-	if (alarmAttack<34)
-	{
-		//attack 
-		//This is the punches started with the left bumper
-		if (inputActionLeft)
+		//INPUT LIGHT ATTACK (X)
+		if (inputAction && attackEnabled)
 		{
+			alarmAttack=24;
+			alarmAttachToTarget=alarmAttack+40;
+			attackState = AttackType.Punch;
+			attackType++;
+			attackEnabled=false;
+			actionsEnabled=false;
+			if (heavyCharges<3) lightAttackCount++;
+		}
+		
+		if (lightAttackCount>4)
+		{
+			lightAttackCount=0;
+			if (heavyCharges<3) heavyCharges++;
+		}
+		
+		// LIGHT ATTACK STATE
+		if (attackState==AttackType.Punch)
+		{
+			if (attackType>1) attackType=0;
+			alarmAttack--;
+			if (alarmAttack<18) 
+			{
+				attackEnabled=true;
+				actionsEnabled=true;
+			}
+		}
+		
+		//INPUT HEAVY ATTACK (Y)
+		if (inputActionSecondary && attackEnabled && heavyCharges>0)
+		{
+			//reverse kick
+			if (movementDirection<270 && movementDirection>90  
+			&& (inputLeft || inputUp || inputDown)) 
+			{
+				attackState = AttackType.ReverseKick;
+				closestTarget.enemyState = EnemyState.Kicked;
+				closestTarget.newSpeed = maxSpeedNormal*2;
+				closestTarget.zspd=8;
+				closestTarget.movementDirection = movementDirection;
+				alarmAttachToTarget=12;
+				attackEnabled=false;
+				actionsEnabled=false;
+					
+			}
+
+			//slam strike
+			else if ((movementDirection<90 && movementDirection >=0) || 
+			(movementDirection<=360 && movementDirection>270)) && (inputRight || inputUp || inputDown)
+			{
+				attackState = AttackType.SlamStrike;
+				closestTarget.enemyState = EnemyState.Slammed;
+				if (!closestTarget.wallToSide) closestTarget.xspd=12;
+				alarmAttachToTarget=12;
+				attackEnabled=false;
+				actionsEnabled=false;
+			}
+			
+			//launcher
+			else
+			{
+				attackState = AttackType.Launcher;
+				closestTarget.enemyState = EnemyState.Launched;
+				closestTarget.zspd=-5;
+				playerState=PlayerState.Normal;
+				alarmMovementLock=12;
+				zspd=-4;
+				attackEnabled=false;
+				actionsEnabled=false;
+			}
+			
 			alarmAttack=40;
-			attackType++;
-			//if (closestTarget.hp != pointer_null) closestTarget.hp-=damage;
-			
-			
-			
-			if (attackState != AttackType.Punch0) {
-			attackState = AttackType.Punch0;	
-			}
-			else {
-			attackState = AttackType.Punch1;	
-			}
-			
-			/*//reset attack types
-			if (attackType>3) attackType = 0;
-			
-			//decide attack type
-			switch(attackType)
-			{
-			{
-				case 0:
-				attackState = AttackType.Punch0;
-				break;
-				case 1:
-				attackState = AttackType.Punch1;
-				break;
-				case 2:
-				attackState = AttackType.Punch0;
-				break;
-				case 3:
-				attackState = AttackType.Punch1;
-				break;
-			} */
+			alarmAttachToTarget=alarmAttack;
+			heavyCharges--;
+			attackEnabled=false;
 		}
-		//This is the kicks started with the left bumper
-		//As it is, if players press both at the same time punch will come out. I plan
-		//on changing this later to the burst move. 
-		else if (inputActionRight) {
-		alarmAttack=40;
-			attackType++;
-			//commented out as I assume we'll change how damage works later. 
-			//if (closestTarget.hp != pointer_null) closestTarget.hp-=damage;
-			
-			
-				attackState = AttackType.Kick;
-				
-		}
-	}
-	
-	/*if (closestTarget.hp<1)
-	{
-		movementLock = false;
-		playerState = PlayerState.Normal;
-	} */
-	
-	//set state to stomping
-	if (!grounded)
-	{
-		if (inputStomp)
+		
+		// REVERSE KICK STATE
+		if (attackState==AttackType.ReverseKick)
 		{
-			playerState = PlayerState.Stomping;
-			//movementLock=true;
+
+			alarmAttack--;
+			if (alarmAttack<18) actionsEnabled=true;
+		}
+		
+		// SLAM STRIKE STATE
+		if (attackState==AttackType.SlamStrike)
+		{
+
+			alarmAttack--;
+			if (alarmAttack<18) actionsEnabled=true;
+		}
+		
+		// LAUNCHER STATE
+		if (attackState==AttackType.Launcher)
+		{
+
+			alarmAttack--;
+			if (alarmAttack<18) actionsEnabled=true;
+		}
+	
+
+	if (actionsEnabled)
+	{
+		//set state to stomping
+		if (!grounded)
+		{
+			if (inputStomp)
+			{
+				playerState = PlayerState.Stomping;
+				//movementLock=true;
+			}
+		}
+		
+		if (inputJump)
+		{
+			playerState = PlayerState.Normal;
+			zspd=-5;
 		}
 	}
 	
+	/*
 	//set state to BackOff
 	if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
 	{
 		alarmAttachToTarget=30;
 		zspd = 2;
 		playerState = PlayerState.BackOff;
-	}
+	}*/
 	
 	//end attack state, return to Normal state
-	if (alarmAttack<0)
+	if (alarmAttachToTarget<0)
 	{
 		attackType=0;
-		alarmAttack = 40;
+		alarmAttack = 20;
 		movementLock = false;
+		attackEnabled=true;
+		actionsEnabled=true;
 		playerState = PlayerState.Normal;
 	}
 }
+
+//COMBO METER
+if (maxSpeedNormal>3)
+{
+	comboMultiplier+=maxSpeedNormal/5000;
+}
+if (comboMultiplier>5) comboMultiplier=5;
 
 //ENEMY BOUNCE STATE
 if (playerState == PlayerState.EnemyBounce)
@@ -616,12 +663,7 @@ if (gamepad_axis_value(0, gp_axislh)>deadZone || gamepad_axis_value(0, gp_axislh
 || gamepad_axis_value(0, gp_axislv)<-deadZone || gamepad_axis_value(0, gp_axislv)>deadZone) gamepadActive = true;
 
 
-
-
-//HANDLE MOVING
-if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead)
-{
-	//KEYBOARD MOVEMENT
+//KEYBOARD DIRECTIONAL INPUT
 	if (!gamepadActive)
 	{
 		if (inputRight) movementDirection = 0;
@@ -634,12 +676,17 @@ if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead
 		if (inputLeft && inputDown) movementDirection = 225;
 	}
 	
-	//GAMEPAD MOVEMENT
+	//GAMEPAD DIRECTIONAL INPUT
 	else if (gamepadActive)
 	{
-		joystickAngle = point_direction(0,0,gamepad_axis_value(0,gp_axislh),gamepad_axis_value(0,gp_axislv))
+		joystickAngle  = point_direction(0,0,gamepad_axis_value(0,gp_axislh),gamepad_axis_value(0,gp_axislv))
 		movementDirection = joystickAngle;
 	}
+
+
+//HANDLE MOVING
+if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead)
+{
 	
 	//calculate speeds with regard to direction 
 	if (inputRight || inputLeft || inputUp || inputDown)

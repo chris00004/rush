@@ -10,13 +10,26 @@ if (playerState != PlayerState.Dead)
 		{
 			switch(attackState)
 			{
-				case AttackType.Punch0: draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
-				break;
-				case AttackType.Punch1: draw_sprite_ext(sprFlamePunch1R, 2, x, y+z, 1, 1, 0, c_red, 1);
-				break;
-				case AttackType.Kick: draw_sprite_ext(sprFlamePunch1R, 0, x, y+z, 1, 1, 0, c_blue, 1);
+				case AttackType.Idle:
+				draw_sprite(sprXFallRight, 0, x, y+z);
 				break;
 				
+				case AttackType.Punch: 
+				if (attackType==0) draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
+				else draw_sprite_ext(sprFlamePunch1R, 2, x, y+z, 1, 1, 0, c_blue, 1);
+				break;
+				
+				case AttackType.ReverseKick: 
+				draw_sprite_ext(sprAnimAttackReverseKick, 0, x, y+z, 1, 1, 0, c_white, 1);
+				break;
+				
+				case AttackType.SlamStrike: 
+				draw_sprite_ext(sprAnimAttackSlam, 0, x, y+z, 1, 1, 0, c_white, 1);
+				break;
+				
+				case AttackType.Launcher: 
+				draw_sprite_ext(sprAnimAttackLaunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				break;
 			}
 		}
 		else if (!grounded) draw_sprite(sprXFallRight, 0, x, y+z);
@@ -33,7 +46,7 @@ else if (playerState == PlayerState.Dead)
 	draw_sprite(sprPlayerDeathIcon, 0, x, y+zFloor+13);
 }
 
-//draw_sprite(sprPlayerHitBox,0,x,y);
+draw_sprite(sprPlayerHitBox,0,x,y);
 
 /*
 draw_text(x+24,y-30,$"X_SPD: {xspd}");
@@ -50,9 +63,27 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y-6,$"X_SPD: {xspd}");
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
-draw_text(x+24,y-6,maxSpeedNormal);
-draw_text(x+24,y+6,movementDirection);
-draw_text(x+24,y+18,place_meeting(x,y,objSlideWallTrigger));
+draw_text(x+24,y-6,lightAttackCount);
+draw_text(x+24,y+6,heavyCharges);
+draw_text(x+24,y+18,movementDirection);
+
+switch(heavyCharges)
+{
+	case 1:
+	draw_rectangle_color(x-20,y-29+z,x-10,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	break;
+	
+	case 2:
+	draw_rectangle_color(x-20,y-29+z,x-10,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	draw_rectangle_color(x-7,y-29+z,x+3,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	break;
+	
+	case 3:
+	draw_rectangle_color(x-20,y-29+z,x-10,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	draw_rectangle_color(x-7,y-29+z,x+3,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	draw_rectangle_color(x+6,y-29+z,x+16,y-23+z,c_white,c_white,c_aqua,c_aqua,false);
+	break;
+}
 
 
 draw_set_color(c_red);
