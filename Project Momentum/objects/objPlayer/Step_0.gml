@@ -70,6 +70,12 @@ if (playerState == PlayerState.Normal)
 		movementLock=false;
 	}
 	
+	//reduces the combo multiplier if the player is on the ground
+	if (grounded && comboMultiplier > 0.0) {
+	comboMultiplier = comboMultiplier - 0.01;	
+	}
+
+	
 	//set state to stomping
 	if (!grounded)
 	{
@@ -234,6 +240,8 @@ if (playerState == PlayerState.AttachToTarget)
 	tY = closestTarget.y;
 	tZ = closestTarget.z;
 	
+	closestTarget.zspd = 0;
+	
 	xspd=0;
 	yspd=0;
 	zspd=0;
@@ -328,6 +336,7 @@ if (playerState == PlayerState.BasicAttack)
 			attackType++;
 			attackEnabled=false;
 			actionsEnabled=false;
+			closestTarget.zspd = 0;
 			if (heavyCharges<3) lightAttackCount++;
 		}
 		
@@ -347,6 +356,12 @@ if (playerState == PlayerState.BasicAttack)
 				attackEnabled=true;
 				actionsEnabled=true;
 			}
+			
+			//If the enemy is armored and not in hitstun, reduces their health then sets their state to hit
+			if (closestTarget.isArmored && closestTarget.enemyState != EnemyState.Hit) {
+				closestTarget.armorHealth--; 
+				closestTarget.enemyState = EnemyState.Hit;
+				}
 		}
 		
 		//INPUT HEAVY ATTACK (Y)
@@ -357,10 +372,29 @@ if (playerState == PlayerState.BasicAttack)
 			&& (inputLeft || inputUp || inputDown)) 
 			{
 				attackState = AttackType.ReverseKick;
-				closestTarget.enemyState = EnemyState.Kicked;
-				closestTarget.newSpeed = maxSpeedNormal*2;
+				
+				//If the target isn't armored, kicks them
+				if (!closestTarget.isArmored) {
+					closestTarget.enemyState = EnemyState.Kicked;
+					closestTarget.newSpeed = maxSpeedNormal*2;
 				closestTarget.zspd=8;
 				closestTarget.movementDirection = movementDirection;
+				playerState=PlayerState.Normal;
+				alarmMovementLock=12;
+				
+				attackEnabled=false;
+				actionsEnabled=false;
+				}
+				//otherwise if they are, puts them in hit stun and reduces their armor health
+				else if (closestTarget.enemyState != EnemyState.Hit) {
+				closestTarget.armorHealth -= 5; 
+				closestTarget.enemyState = EnemyState.Hit;
+				}
+				
+				
+			
+				
+				
 				alarmAttachToTarget=12;
 				attackEnabled=false;
 				actionsEnabled=false;
@@ -372,22 +406,41 @@ if (playerState == PlayerState.BasicAttack)
 			(movementDirection<=360 && movementDirection>270)) && (inputRight || inputUp || inputDown)
 			{
 				attackState = AttackType.SlamStrike;
+				if (!closestTarget.isArmored) {
 				closestTarget.enemyState = EnemyState.Slammed;
 				if (!closestTarget.wallToSide) closestTarget.xspd=12;
+				
+				}
+				else if (closestTarget.enemyState != EnemyState.Hit) {
+					closestTarget.armorHealth -= 5; 
+				closestTarget.enemyState = EnemyState.Hit;
+				}
+				
 				alarmAttachToTarget=12;
 				attackEnabled=false;
 				actionsEnabled=false;
+				
 			}
 			
 			//launcher
 			else
 			{
 				attackState = AttackType.Launcher;
-				closestTarget.enemyState = EnemyState.Launched;
-				closestTarget.zspd=-5;
+				
+				//If the target isn't armored, launches them
+				if (!closestTarget.isArmored) {
+					closestTarget.enemyState = EnemyState.Launched;
+					closestTarget.zspd=-4;
+					zspd=-3;
+				}
+				//otherwise if they are, puts them in hit stun and reduces their armor health
+				else if (closestTarget.enemyState != EnemyState.Hit) {
+				closestTarget.armorHealth -= 5; 
+				closestTarget.enemyState = EnemyState.Hit;
+				}
 				playerState=PlayerState.Normal;
 				alarmMovementLock=12;
-				zspd=-4;
+				
 				attackEnabled=false;
 				actionsEnabled=false;
 			}
@@ -468,7 +521,11 @@ if (maxSpeedNormal>3)
 {
 	comboMultiplier+=maxSpeedNormal/5000;
 }
-if (comboMultiplier>5) comboMultiplier=5;
+if (comboMultiplier>5) {comboMultiplier=5;}
+
+if (comboMultiplier < 0) {
+comboMultiplier = 0;	
+}
 
 //ENEMY BOUNCE STATE
 if (playerState == PlayerState.EnemyBounce)
