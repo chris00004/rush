@@ -1,6 +1,5 @@
 enum EnemyState {
 	Normal,
-	Hit,
 	Dead,
 	Slammed,
 	Kicked,
@@ -27,7 +26,3 @@ kickedMovementApplied=false;
 wallToLeft=false;
 wallToRight=false;
 wallToSide=false;
-isArmored=true;
-armorHealth=7;
-armorTimer=300;
-hitStunTimer = 0;

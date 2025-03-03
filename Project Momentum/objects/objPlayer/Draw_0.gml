@@ -32,11 +32,7 @@ if (playerState != PlayerState.Dead)
 				break;
 			}
 		}
-		
-		//draws left or right air sprites depending on speed and what side they're attached to the enemy
-		else if (!grounded && xspd >= 0 && attachSide != 1) draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
-		else if (!grounded && (xspd < 0 || attachSide = 1)) draw_sprite_ext(sprXFallRight, 0, x, y+z, -1, 1, 0, c_white, 1);
-		
+		else if (!grounded) draw_sprite(sprXFallRight, 0, x, y+z);
 		else draw_sprite(sprXIdleRight, animFrameIdle, x, y+z);
 		
 		//boost icon

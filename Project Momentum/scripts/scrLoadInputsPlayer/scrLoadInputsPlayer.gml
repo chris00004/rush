@@ -54,21 +54,8 @@ buttonLTHold = gamepad_button_check(0,gp_shoulderlb);//LT
 //pressing
 inputRight = (keyRight || (gamepad_axis_value(0, gp_axislh)>deadZone));
 inputLeft = (keyLeft || (gamepad_axis_value(0, gp_axislh)<-deadZone));
-
-//SOCD cleaning
-if (inputRight && inputLeft) {
-inputRight = !inputRight;
-inputLeft = !inputLeft;
-}
 inputUp = (keyUp || (gamepad_axis_value(0, gp_axislv)<-deadZone));
 inputDown = (keyDown || (gamepad_axis_value(0, gp_axislv)>deadZone));
-
-//SOCD cleaning
-if (inputUp && inputDown) {
-inputDown = !inputDown;
-inputUp = !inputUp;
-}
-
 inputAction = (keyAction || buttonAction);
 inputActionSecondary = (keyActionSecondary || buttonActionSecondary);
 inputActionLeft = (keyActionLeft || buttonActionLeft);

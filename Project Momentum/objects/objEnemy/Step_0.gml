@@ -30,19 +30,6 @@ if (hp != pointer_null && hp<=0 && active)
 	active = false;
 }
 
-if (armorHealth <= 0) {
-armorHealth = 0;
-isArmored = false;
-armorTimer--;
-}
-
-if (armorTimer <= 0) {
-armorTimer = 300;
-isArmored = true;
-armorHealth = 15;
-}
-
-
 //movement
 x+=xspd;
 y+=yspd;
@@ -68,19 +55,6 @@ else wallToLeft=false;
 //STATES
 switch(enemyState)
 {
-	
-	
-	
-	case EnemyState.Hit:
-	if (hitStunTimer == 0) {
-	hitStunTimer = 30;	
-	enemyState = EnemyState.Normal;
-	}
-	else {
-		hitStunTimer--;
-	}
-	break;
-	
 	case EnemyState.Kicked:
 	
 	//apply direction and speed from player reverse kick attack
@@ -110,12 +84,6 @@ switch(enemyState)
 		}
 	}
 	break;
-	
-	case EnemyState.Launched:
-	
-	
-	break;
-	
 }
 
 
