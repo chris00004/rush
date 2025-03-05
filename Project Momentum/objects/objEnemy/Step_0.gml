@@ -34,7 +34,11 @@ if (hp != pointer_null && hp<=0 && active)
 x+=xspd;
 y+=yspd;
 z+=zspd;
-if (z!=zFloor-24) zspd+=grav;
+if (z!=zFloor-24) 
+{
+	grounded=false;
+	zspd+=grav;
+}
 
 
 //collision
@@ -42,6 +46,7 @@ if (z>zFloor-24)
 {
 	z=zFloor-24;
 	zspd=0;
+	grounded=true;
 }
 
 if (place_meeting(x+xspd+1,y,objWall) || place_meeting(x+xspd-1,y,objWall)) wallToSide=true;
@@ -51,6 +56,17 @@ if (place_meeting(x+xspd+1,y,objWall)) wallToRight=true;
 else wallToRight=false;
 if (place_meeting(x+xspd-1,y,objWall)) wallToLeft=true;
 else wallToLeft=false;
+
+//slide launching
+if (grounded && place_meeting(x,y,objPlayer) && objPlayer.playerState == PlayerState.Sliding)
+{
+	enemyState = EnemyState.SlideLaunched;
+	xspd=objPlayer.xspd*1.1;
+	yspd=objPlayer.yspd*1.1;
+	xDecceleration = xspd/25;
+	yDecceleration = yspd/25;
+	zspd=-3;
+}
 
 //STATES
 switch(enemyState)
@@ -83,6 +99,29 @@ switch(enemyState)
 			kickedMovementApplied=false;
 		}
 	}
+	break;
+	
+	case EnemyState.SlideLaunched:
+	
+	//apply direction and speed from player reverse kick attack
+
+if (grounded)
+{
+		//apply decceleration
+		xspd-=xDecceleration;
+		yspd-=yDecceleration;
+}
+		
+		//stop moving if speed close to 0
+		if (abs(xspd) < 0.1) xspd = 0;
+		if (abs(yspd) < 0.1) yspd = 0;
+	
+		//reset back to normal state
+		if (xspd==0 && yspd==0) 
+		{
+			enemyState = EnemyState.Normal;
+		}
+	
 	break;
 }
 

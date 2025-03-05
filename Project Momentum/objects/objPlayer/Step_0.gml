@@ -124,7 +124,6 @@ if (playerState == PlayerState.Sliding)
 	alarmMomentumLoss = 1;
 	alarmSliding--;
 
-
 	if (alarmSliding<0) && (!place_meeting(x,y,objSlideWallTrigger))
 	{
 		alarmSliding = 45/currentSpeed;

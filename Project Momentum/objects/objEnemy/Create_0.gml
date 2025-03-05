@@ -3,6 +3,7 @@ enum EnemyState {
 	Dead,
 	Slammed,
 	Kicked,
+	SlideLaunched,
 	Launched,
 }
 
@@ -26,3 +27,4 @@ kickedMovementApplied=false;
 wallToLeft=false;
 wallToRight=false;
 wallToSide=false;
+grounded=false;
