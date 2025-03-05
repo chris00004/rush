@@ -149,6 +149,7 @@ attackBuffer = -1;
 attackType = 0;
 alarmAttack = 12;
 damage = 1;
+hitStun = 1;
 comboMultiplier = 0;
 attackEnabled = false;
 actionsEnabled = true;

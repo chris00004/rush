@@ -73,6 +73,12 @@ switch(enemyState)
 {
 	case EnemyState.Kicked:
 	
+	
+	/*if (beenHit) {
+	hp = hp - objPlayer.damage; 
+	
+	}*/
+	
 	//apply direction and speed from player reverse kick attack
 	if (!kickedMovementApplied)
 	{
@@ -100,6 +106,12 @@ switch(enemyState)
 		}
 	}
 	break;
+	
+	case EnemyState.Launched:
+		if (zspd == 0) {
+		enemyState = EnemyState.Normal;	
+		}
+		break;
 	
 	case EnemyState.SlideLaunched:
 	

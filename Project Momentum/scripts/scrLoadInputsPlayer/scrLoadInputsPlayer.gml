@@ -56,6 +56,19 @@ inputRight = (keyRight || (gamepad_axis_value(0, gp_axislh)>deadZone));
 inputLeft = (keyLeft || (gamepad_axis_value(0, gp_axislh)<-deadZone));
 inputUp = (keyUp || (gamepad_axis_value(0, gp_axislv)<-deadZone));
 inputDown = (keyDown || (gamepad_axis_value(0, gp_axislv)>deadZone));
+
+//SOCD cleaning
+if (inputRight && inputLeft) {
+inputRight = !inputRight;
+inputLeft = !inputLeft;
+}
+
+//SOCD cleaning
+if (inputUp && inputDown) {
+inputDown = !inputDown;
+inputUp = !inputUp;
+}
+
 inputAction = (keyAction || buttonAction);
 inputActionSecondary = (keyActionSecondary || buttonActionSecondary);
 inputActionLeft = (keyActionLeft || buttonActionLeft);

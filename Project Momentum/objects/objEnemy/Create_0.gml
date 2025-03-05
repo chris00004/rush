@@ -4,12 +4,12 @@ enum EnemyState {
 	Slammed,
 	Kicked,
 	SlideLaunched,
-	Launched,
+	Launched
 }
 
 event_inherited();
 hpInitial = 5;
-hp = 5;
+hp = 20;
 weak = false;
 isEnemy=true;
 xspd=0;
@@ -28,3 +28,7 @@ wallToLeft=false;
 wallToRight=false;
 wallToSide=false;
 grounded=false;
+beenHit=false;
+hitStun = 0;
+
+

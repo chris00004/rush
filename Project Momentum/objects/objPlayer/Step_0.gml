@@ -70,6 +70,12 @@ if (playerState == PlayerState.Normal)
 		movementLock=false;
 	}
 	
+	//reduces the combo multiplier if the player is on the ground
+	if (grounded && comboMultiplier > 0.0) {
+	comboMultiplier = comboMultiplier - 0.01;	
+	}
+	
+	
 	//set state to stomping
 	if (!grounded)
 	{
@@ -229,6 +235,7 @@ if (playerState == PlayerState.HomeIn)
 //ATTACH TO TARGET STATE
 if (playerState == PlayerState.AttachToTarget)
 {
+	damage = 1;
 	tX = closestTarget.x;
 	tY = closestTarget.y;
 	tZ = closestTarget.z;
@@ -321,6 +328,16 @@ if (playerState == PlayerState.BasicAttack)
 		//INPUT LIGHT ATTACK (X)
 		if (inputAction && attackEnabled)
 		{
+			
+			//increases damage by multiplier and adds the hit to the multiplier
+			damage = 1 * comboMultiplier;
+			comboMultiplier += 0.05;
+			
+			/*if (!closestTarget.beenHit){
+			closestTarget.beenHit = true;	
+			
+			}*/
+			//closestTarget.hp -= damage;
 			alarmAttack=24;
 			alarmAttachToTarget=alarmAttack+40;
 			attackState = AttackType.Punch;
@@ -328,6 +345,10 @@ if (playerState == PlayerState.BasicAttack)
 			attackEnabled=false;
 			actionsEnabled=false;
 			if (heavyCharges<3) lightAttackCount++;
+			
+			if (closestTarget.enemyState == EnemyState.Launched) {
+			//closestTarget.zspd = -0.5;	
+			}
 		}
 		
 		if (lightAttackCount>4)
@@ -339,12 +360,16 @@ if (playerState == PlayerState.BasicAttack)
 		// LIGHT ATTACK STATE
 		if (attackState==AttackType.Punch)
 		{
+			
 			if (attackType>1) attackType=0;
 			alarmAttack--;
-			if (alarmAttack<18) 
+			if (alarmAttack < 14) 
 			{
 				attackEnabled=true;
 				actionsEnabled=true;
+			}
+			if (alarmAttack <= 0) {
+			playerState = PlayerState.AttachToTarget;	
 			}
 		}
 		
@@ -356,6 +381,11 @@ if (playerState == PlayerState.BasicAttack)
 			&& (inputLeft || inputUp || inputDown)) 
 			{
 				attackState = AttackType.ReverseKick;
+				
+				//increases damage by multiplier and adds the hit to the multiplier
+				damage = 5 * comboMultiplier;
+				comboMultiplier += 0.1;
+				
 				closestTarget.enemyState = EnemyState.Kicked;
 				closestTarget.newSpeed = maxSpeedNormal*2;
 				closestTarget.zspd=8;
@@ -372,6 +402,11 @@ if (playerState == PlayerState.BasicAttack)
 			{
 				attackState = AttackType.SlamStrike;
 				closestTarget.enemyState = EnemyState.Slammed;
+				
+				//increases damage by multiplier and adds the hit to the multiplier
+				damage = 5 * comboMultiplier;
+				comboMultiplier += 0.1;
+				
 				if (!closestTarget.wallToSide) closestTarget.xspd=12;
 				alarmAttachToTarget=12;
 				attackEnabled=false;
@@ -381,6 +416,11 @@ if (playerState == PlayerState.BasicAttack)
 			//launcher
 			else
 			{
+				//increases damage by multiplier and adds the hit to the multiplier
+				damage = 1 * comboMultiplier;
+				comboMultiplier += 0.01;
+				
+				
 				attackState = AttackType.Launcher;
 				closestTarget.enemyState = EnemyState.Launched;
 				closestTarget.zspd=-5;
@@ -465,9 +505,16 @@ if (playerState == PlayerState.BasicAttack)
 //COMBO METER
 if (maxSpeedNormal>3)
 {
-	comboMultiplier+=maxSpeedNormal/5000;
+	//comboMultiplier+=maxSpeedNormal/5000;
 }
-if (comboMultiplier>5) comboMultiplier=5;
+
+//Caps the combo multiplier at 5
+if (comboMultiplier>5) {comboMultiplier=5;}
+
+//Keeps the combo multiplier from decreasing below 0
+if (comboMultiplier < 0) {
+comboMultiplier = 0;	
+}
 
 //ENEMY BOUNCE STATE
 if (playerState == PlayerState.EnemyBounce)
@@ -515,6 +562,8 @@ if (playerState == PlayerState.BackOff)
 		xspd = 5;
 		
 	}
+	
+	
 	//end backoff state, return to normal state
 	if (grounded) 
 	{
