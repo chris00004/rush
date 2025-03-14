@@ -51,7 +51,7 @@ if (playerState != PlayerState.Dead)
 		else if (!grounded && xspd >= 0 && attachSide != 1) draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
 		else if (!grounded && (xspd < 0 || attachSide = 1)) draw_sprite_ext(sprXFallRight, 0, x, y+z, -1, 1, 0, c_white, 1);
 		
-		else draw_sprite(sprXIdleRight, animFrameIdle, x, y+z);
+		else draw_sprite(sprXIdleRight, 1, x, y+z);
 		
 		//boost icon
 		/*
@@ -64,7 +64,8 @@ else if (playerState == PlayerState.Dead)
 	draw_sprite(sprPlayerDeathIcon, 0, x, y+zFloor+13);
 }
 
-draw_sprite(sprPlayerHitBox,0,x,y);
+//HITBOX
+//draw_sprite(sprPlayerHitBox,0,x,y);
 
 /*
 draw_text(x+24,y-30,$"X_SPD: {xspd}");

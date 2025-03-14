@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprFlameIdleR",
-    "path":"sprites/sprFlameIdleR/sprFlameIdleR.yy",
+    "name":"sprXIdleRight",
+    "path":"sprites/sprXIdleRight/sprXIdleRight.yy",
   },
   "spriteMaskId":{
     "name":"sprPlayerHitBox",

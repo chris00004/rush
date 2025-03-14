@@ -61,11 +61,11 @@ else wallToLeft=false;
 if (grounded && place_meeting(x,y,objPlayer) && objPlayer.playerState == PlayerState.Sliding)
 {
 	enemyState = EnemyState.SlideLaunched;
-	xspd=objPlayer.xspd*1.1;
-	yspd=objPlayer.yspd*1.1;
+	xspd=objPlayer.xspd*1.15;
+	yspd=objPlayer.yspd*1.15;
 	xDecceleration = xspd/25;
 	yDecceleration = yspd/25;
-	zspd=-3;
+	zspd=-objPlayer.currentSpeed/2.75;
 }
 
 //STATES
@@ -112,7 +112,7 @@ switch(enemyState)
 	case EnemyState.SlideLaunched:
 	
 	//apply direction and speed from player reverse kick attack
-	
+
 if (grounded)
 {
 		//apply decceleration

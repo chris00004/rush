@@ -6,7 +6,7 @@ draw_sprite(sprEnemyTest, 0, x, y+z);
 draw_text(x-24,y+z,inPlayerRange);
 draw_text(x-24, y+z+12, enemyState);
 
-if (inPlayerRange && objPlayer.closestTarget == self 
+if (objPlayer.closestTarget == self 
 && !collision_line(objPlayer.x,objPlayer.y,x,y,objWall,false,true) 
 && objPlayer.playerState != PlayerState.DialogueNPC)
 {
