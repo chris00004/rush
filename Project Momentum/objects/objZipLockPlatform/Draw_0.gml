@@ -1,0 +1,1 @@
+draw_sprite(sprZipLockPlatform,active,x,y);

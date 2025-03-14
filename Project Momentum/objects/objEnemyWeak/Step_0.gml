@@ -26,7 +26,6 @@ targetAngle += 15;
 if (hp != pointer_null && hp<=0)
 {
 	active = false;
-	objPlayer.maxSpeedNormal += 0.5;
 }
 
 //reset
@@ -36,29 +35,6 @@ if (objPlayer.playerState = PlayerState.Dead)
 	hp = hpInitial;
 }
 
-/*
-if (objPlayer.playerState==PlayerState.HomeIn)
-{
-	objPlayer.boosting=false;
-	if (place_meeting(x,y,objPlayer))
-	{
-		if (active)
-		{
-			objPlayer.movementLock=true;
-			objPlayer.grav = objPlayer.gravNormal;
-			objPlayer.xspd=0;
-			objPlayer.yspd=0;
-			objPlayer.zspd=-3;
-			active=false;
-		}
-	}
-	//return player to normal state after peak of launch
-	if (objPlayer.zspd>-4 && !active)
-	{
-		objPlayer.movementLock=false;
-		active=true;
-		objPlayer.playerState=PlayerState.Normal;
-	}
-} */
+
 
 
