@@ -1,2 +1,0 @@
-if (room!= rmTitleScreen) room_goto(rmTitleScreen);
-

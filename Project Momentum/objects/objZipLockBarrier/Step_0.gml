@@ -1,2 +1,0 @@
-x+=xspd;
-y+=yspd;

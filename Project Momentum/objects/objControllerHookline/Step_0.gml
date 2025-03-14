@@ -1,1 +1,0 @@
-dir = image_index;

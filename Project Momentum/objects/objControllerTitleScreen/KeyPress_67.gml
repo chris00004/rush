@@ -1,1 +1,0 @@
-if (room!= rmControlsScreen) room_goto(rmControlsScreen);
