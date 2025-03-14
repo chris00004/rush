@@ -30,6 +30,20 @@ if (hp != pointer_null && hp<=0 && active)
 	active = false;
 }
 
+if (armorHealth <= 0 && enemyState != EnemyState.Launched) {
+ armorHealth = 0;
+ isArmored = false;
+ armorTimer--;
+ }
+ 
+ if (armorTimer <= 0) {
+ armorTimer = 300;
+ isArmored = true;
+ armorHealth = 15;
+ }
+ 
+ 
+
 //movement
 x+=xspd;
 y+=yspd;
@@ -74,6 +88,10 @@ switch(enemyState)
 	case EnemyState.Kicked:
 	
 	
+	/*if (beenHit) {
+	hp = hp - objPlayer.damage; 
+	
+	}*/
 	
 	//apply direction and speed from player reverse kick attack
 	if (!kickedMovementApplied)
@@ -104,6 +122,7 @@ switch(enemyState)
 	break;
 	
 	case EnemyState.Launched:
+		//enemies are considered launched until they touch the ground
 		if (zspd == 0) {
 		enemyState = EnemyState.Normal;	
 		}
@@ -112,7 +131,7 @@ switch(enemyState)
 	case EnemyState.SlideLaunched:
 	
 	//apply direction and speed from player reverse kick attack
-	
+
 if (grounded)
 {
 		//apply decceleration
@@ -130,37 +149,6 @@ if (grounded)
 			enemyState = EnemyState.Normal;
 		}
 	
-	break;
-	
-	
-	case EnemyState.Chucked:
-	
-	if (!kickedMovementApplied) {
-		xspd = chuckedAtX * (objPlayer.maxSpeedNormal / 20);
-		yspd = chuckedAtY * (objPlayer.maxSpeedNormal / 20);
-		//zspd = chuckedAtZ * (objPlayer.maxSpeedNormal / 20);
-		xDecceleration = xspd/75;
-		yDecceleration = yspd/75;
-		zDecceleration = zspd/75;
-		kickedMovementApplied = true;
-	}
-	else {
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
 	break;
 }
 

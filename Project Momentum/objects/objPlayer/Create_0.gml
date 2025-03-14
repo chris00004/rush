@@ -38,11 +38,15 @@ enum AttackType
 {
 	Idle,
 	Punch,
-	ReverseKick,	
+	ReverseKick, //Kicks enemy backwards (high damage, long recovery)	
 	Launcher, //launches enemy up in the air (low damage, allows juggling)
 	SlamStrike, //slams enemy down to the ground (high damage, high enemy recovery time)
-	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
-	Grab, //
+	GrabChuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
+	Grab, //neutral grab state, goes into the other states
+	GrabSuplex,
+	GrabToss,
+	GrabChuckBack,
+	ComboExtender, //ends the punch string with a stronger punch, which resets the punch string (moderate damage, costs meter)
 	BackOff,	//
 	
 }
@@ -82,6 +86,7 @@ alarmMovementLock=50;
 jumpLock=false;
 inputLock=false;
 charLock=false;
+armorLockedAnimation = false;
 
 //Enums
 playerState = 0;

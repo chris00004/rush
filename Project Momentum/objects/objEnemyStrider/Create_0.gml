@@ -1,13 +1,4 @@
-enum EnemyState {
-	Normal,
-	Dead,
-	Slammed,
-	Kicked,
-	Chucked,
-	Suplexed,
-	SlideLaunched,
-	Launched
-}
+
 
 event_inherited();
 hpInitial = 5;
@@ -21,7 +12,6 @@ newSpeed=0;
 movementDirection=0;
 xDecceleration = 0;
 yDecceleration = 0;
-zDecceleration = 0;
 grav = 0.12;
 zFloor=16;
 attackable=true;
@@ -34,6 +24,4 @@ grounded=false;
 beenHit=false;
 hitStun = 0;
 isArmored = false;
-chuckedAtX = 0;
-chuckedAtY = 0;
-chuckedAtZ = 0;
+
