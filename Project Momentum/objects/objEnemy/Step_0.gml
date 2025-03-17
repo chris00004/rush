@@ -41,7 +41,7 @@ if (z!=zFloor-24)
 }
 
 
-//collision
+//ground collision
 if (z>zFloor-24)
 {
 	z=zFloor-24;
@@ -49,11 +49,13 @@ if (z>zFloor-24)
 	grounded=true;
 }
 
+//check if walls are in the way
 if (place_meeting(x+xspd+1,y,objWall) || place_meeting(x+xspd-1,y,objWall)) wallToSide=true;
 else wallToSide=false;
 
 if (place_meeting(x+xspd+1,y,objWall)) wallToRight=true;
 else wallToRight=false;
+
 if (place_meeting(x+xspd-1,y,objWall)) wallToLeft=true;
 else wallToLeft=false;
 
@@ -71,15 +73,9 @@ if (grounded && place_meeting(x,y,objPlayer) && objPlayer.playerState == PlayerS
 //STATES
 switch(enemyState)
 {
-	case EnemyState.Kicked:
+	//SLAM STRIKE STATE
+	case EnemyState.SlamStrike:
 	
-	
-	/*if (beenHit) {
-	hp = hp - objPlayer.damage; 
-	
-	}*/
-	
-	//apply direction and speed from player reverse kick attack
 	if (!kickedMovementApplied)
 	{
 		xspd = lengthdir_x(newSpeed, movementDirection);
@@ -95,8 +91,8 @@ switch(enemyState)
 		yspd-=yDecceleration;
 		
 		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
+		if (abs(xspd) < 0.1+xDecceleration) xspd = 0;
+		if (abs(yspd) < 0.1+yDecceleration) yspd = 0;
 	
 		//reset back to normal state
 		if (xspd==0 && yspd==0) 
@@ -107,22 +103,78 @@ switch(enemyState)
 	}
 	break;
 	
+	//SHOVED STATE
+	case EnemyState.Shoved:
+	
+	if (!kickedMovementApplied)
+	{
+		xDecceleration = xspd/40;
+		kickedMovementApplied=true;
+	}
+	else
+	{
+		//apply decceleration
+		xspd-=xDecceleration;
+		
+		//stop moving if speed close to 0
+		if (abs(xspd) < 0.1+xDecceleration) 
+		{
+			xspd = 0;
+			xDecceleration=0;
+			enemyState = EnemyState.Normal;
+			kickedMovementApplied=false;
+		}
+	}
+	break;
+	
+	//SPIKED
+	case EnemyState.Spiked:
+	
+	if (!kickedMovementApplied)
+	{
+		xDecceleration = xspd/40;
+		kickedMovementApplied=true;
+	}
+	else
+	{
+		//apply decceleration
+		xspd-=xDecceleration;
+		
+		//stop moving if speed close to 0
+		if (abs(xspd) < 0.1+xDecceleration) 
+		{
+			xspd = 0;
+			xDecceleration=0;
+			enemyState = EnemyState.Normal;
+			kickedMovementApplied=false;
+		}
+		if (grounded)
+		{
+			xspd=0;
+			xDecceleration=0;
+			zspd=0;
+			yspd=0;
+			kickedMovementApplied=false;
+			enemyState = EnemyState.Normal;
+		}
+	}
+	break;
+	
+	//JUGGLING STATE
 	case EnemyState.Launched:
-		if (zspd == 0) {
+		if (zspd>=0) 
+		{
+			grav=0.04;
+		}
+		if (grounded) 
+		{
 		enemyState = EnemyState.Normal;	
+		grav=0.12;
 		}
 		break;
 	
+	//SLIDE LAUNCHING STATE
 	case EnemyState.SlideLaunched:
-	
-	//apply direction and speed from player reverse kick attack
-
-if (grounded)
-{
-		//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-}
 		
 		//stop moving if speed close to 0
 		if (abs(xspd) < 0.1) xspd = 0;
@@ -149,12 +201,17 @@ if (abs(xspd) > abs(yspd))
         {
             x += sign(xspd);
         }
-        if (enemyState == EnemyState.Kicked)
+        if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Spiked)
         {
             xspd *= -1;
             xDecceleration *= -1;
         }
-        else xspd = 0;
+        else 
+		{
+			xspd = 0;
+			xDecceleration=0;
+		}
     }
 
     // Then handle Y collision
@@ -164,7 +221,8 @@ if (abs(xspd) > abs(yspd))
         {
             y += sign(yspd);
         }
-        if (enemyState == EnemyState.Kicked)
+        if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Spiked)
         {
             yspd *= -1;
             yDecceleration *= -1;
@@ -181,7 +239,8 @@ else
         {
             y += sign(yspd);
         }
-        if (enemyState == EnemyState.Kicked)
+        if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Spiked)
         {
             yspd *= -1;
             yDecceleration *= -1;
@@ -196,7 +255,8 @@ else
         {
             x += sign(xspd);
         }
-        if (enemyState == EnemyState.Kicked)
+        if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Spiked)
         {
             xspd *= -1;
             xDecceleration *= -1;

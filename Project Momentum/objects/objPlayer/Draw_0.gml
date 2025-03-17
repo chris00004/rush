@@ -6,28 +6,29 @@ if (playerState != PlayerState.Dead)
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
 		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
 		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
-		else if (playerState == PlayerState.BasicAttack)
+		else if (playerState == PlayerState.BasicAttack 
+		|| playerState == PlayerState.AttackFinish)
 		{
 			switch(attackState)
 			{
-				case AttackType.Idle:
+				case AttackState.Idle:
 				draw_sprite(sprXFallRight, 0, x, y+z);
 				break;
 				
-				case AttackType.Punch: 
-				if (attackType==0) draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
+				case AttackState.Punch: 
+				if (punchAnim==0) draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
 				else draw_sprite_ext(sprFlamePunch1R, 2, x, y+z, 1, 1, 0, c_blue, 1);
 				break;
 				
-				case AttackType.ReverseKick: 
+				case AttackState.PunchFinisher: 
+				draw_sprite_ext(sprXHeavyPunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				break;
+				
+				case AttackState.SlamStrike: 
 				draw_sprite_ext(sprAnimAttackReverseKick, 0, x, y+z, 1, 1, 0, c_white, 1);
 				break;
 				
-				case AttackType.SlamStrike: 
-				draw_sprite_ext(sprAnimAttackSlam, 0, x, y+z, 1, 1, 0, c_white, 1);
-				break;
-				
-				case AttackType.Launcher: 
+				case AttackState.Launcher: 
 				draw_sprite_ext(sprAnimAttackLaunch, 0, x, y+z, 1, 1, 0, c_white, 1);
 				break;
 			}
@@ -68,8 +69,8 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y-6,$"X_SPD: {xspd}");
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
-draw_text(x+24,y-6,lightAttackCount);
-draw_text(x+24,y+6,heavyCharges);
+draw_text(x+24,y-6,xspd);
+draw_text(x+24,y+6,playerState);
 draw_text(x+24,y+18,movementDirection);
 
 switch(heavyCharges)

@@ -209,6 +209,7 @@
     {"name":"sprWallSide","order":3,"path":"sprites/sprWallSide/sprWallSide.yy",},
     {"name":"sprX","order":8,"path":"sprites/sprX/sprX.yy",},
     {"name":"sprXFallRight","order":31,"path":"sprites/sprXFallRight/sprXFallRight.yy",},
+    {"name":"sprXHeavyPunch","order":44,"path":"sprites/sprXHeavyPunch/sprXHeavyPunch.yy",},
     {"name":"sprXIdleRight","order":27,"path":"sprites/sprXIdleRight/sprXIdleRight.yy",},
     {"name":"sprXRunDown_1","order":29,"path":"sprites/sprXRunDown_1/sprXRunDown_1.yy",},
     {"name":"sprXRunDown","order":28,"path":"sprites/sprXRunDown/sprXRunDown.yy",},

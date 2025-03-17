@@ -7,8 +7,8 @@ enum PlayerState
 	AttachToTarget,
 	Sliding,
 	Stomping,
-	QuickStep,
 	BasicAttack,
+	AttackFinish,
 	EnemyBounce,
 	DialogueNPC,
 	Launcher, //launches enemy up in the air (low damage, allows juggling)
@@ -34,11 +34,11 @@ enum PlayerAnimationDirection
 }
 
 
-enum AttackType
+enum AttackState
 {
 	Idle,
 	Punch,
-	ReverseKick,	
+	PunchFinisher,	
 	Launcher, //launches enemy up in the air (low damage, allows juggling)
 	SlamStrike, //slams enemy down to the ground (high damage, high enemy recovery time)
 	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
@@ -78,7 +78,7 @@ alarmSliding = 120;
 
 //locks
 movementLock=false;
-alarmMovementLock=50;
+alarmMovementLock=14;
 jumpLock=false;
 inputLock=false;
 charLock=false;
@@ -146,7 +146,7 @@ hookLineFalling = false;
 
 //combat
 attackBuffer = -1;
-attackType = 0;
+punchAnim = 0;
 alarmAttack = 12;
 damage = 1;
 hitStun = 1;
@@ -155,6 +155,7 @@ attackEnabled = false;
 actionsEnabled = true;
 heavyCharges = 0;
 lightAttackCount = 0;
+attackFinishType=-1;
 
 
 //moving plat

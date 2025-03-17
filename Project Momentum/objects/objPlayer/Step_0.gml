@@ -46,7 +46,7 @@ if (momentumLoss)
 	}
 }
 
-//GOD MODE
+//-----[ GOD MODE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.GodMode)
 {
 	movementLock=false;
@@ -59,16 +59,11 @@ if (playerState == PlayerState.GodMode)
 	if (z>-12) z =-12;
 }
 
-//NORMAL STATE
+//-----[ NORMAL STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Normal)
 {	
 	grav = gravNormal;
 	//animYPosActual = false;
-	alarmMovementLock--;
-	if (alarmMovementLock<0)
-	{
-		movementLock=false;
-	}
 	
 	//reduces the combo multiplier if the player is on the ground
 	if (grounded && comboMultiplier > 0.0) {
@@ -85,21 +80,7 @@ if (playerState == PlayerState.Normal)
 			//movementLock=true;
 		}
 	}
-	/*
-	//set state to punching
-	if (inputActionLeft) {
-		alarmAttack=0;
-		playerState = PlayerState.BasicAttack;
-		attackState = AttackType.Punch0;
-	}
-	
-	//sets state to kicking
-	else if (inputActionRight) {
-		alarmAttack=0;
-		playerState = PlayerState.BasicAttack;
-		attackState = AttackType.Kick;
-	}*/
-	
+
 	//set state to sliding
 	if (grounded && currentSpeed>=2.5)
 	{
@@ -123,7 +104,7 @@ if (playerState == PlayerState.Normal)
 		scrTargetObject();
 }
 
-//SLIDING STATE
+//-------[ SLIDING STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Sliding)
 {
 	momentumLoss=false;
@@ -144,7 +125,7 @@ if (playerState == PlayerState.Sliding)
 	else jumpLock = false;
 }
 
-//DEAD STATE
+//-----[ DEAD STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Dead)
 {
 	xspd = 0;
@@ -166,7 +147,7 @@ if (playerState == PlayerState.Dead)
 	}
 }
 
-//STOMPING STATE
+//-----[ STOMPING STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Stomping)
 {
 
@@ -178,7 +159,7 @@ if (playerState == PlayerState.Stomping)
 	}
 }
 
-//HOME IN STATE
+//----[ HOME IN STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.HomeIn)
 {
 	landed = false;
@@ -232,7 +213,7 @@ if (playerState == PlayerState.HomeIn)
 
 
 
-//ATTACH TO TARGET STATE
+//----[ ATTACH TO TARGET STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.AttachToTarget)
 {
 	damage = 1;
@@ -287,6 +268,7 @@ if (playerState == PlayerState.AttachToTarget)
 			alarmAttachToTarget=50;
 			alarmAttack=20;
 			attackEnabled=true;
+			lightAttackCount=0;
 			playerState = PlayerState.BasicAttack;
 		}
 		
@@ -305,6 +287,7 @@ if (playerState == PlayerState.AttachToTarget)
 		{
 			if (inputStomp)
 			{
+				movementLock=false;
 				playerState = PlayerState.Stomping;
 				//movementLock=true;
 			}
@@ -312,6 +295,7 @@ if (playerState == PlayerState.AttachToTarget)
 		
 		if (inputJump)
 		{
+			movementLock=false;
 			playerState = PlayerState.Normal;
 			zspd=-5;
 		}
@@ -327,50 +311,93 @@ if (playerState == PlayerState.AttachToTarget)
 }
 
 
-//ATTACK STATE
+//---[ ATTACK STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.BasicAttack)
 {
 	alarmAttachToTarget--;
+	
+	//make sure player stays attatched to target
+	tX = closestTarget.x;
+	tY = closestTarget.y;
+	tZ = closestTarget.z;
+	
+	xspd=0;
+	yspd=0;
 	zspd=0;
-	z=closestTarget.z;
+	z=tZ;
+	y=tY;
+	
+	if (closestTarget.targetType==1)
+	{
+		if (x<=tX) 
+		{
+			x = tX-closestTarget.targetDisplacement;
+			attachSide = 0;
+		}
+		else 
+		{
+			x = tX+closestTarget.targetDisplacement;
+			attachSide = 1;
+		}
+	}
+	else if (closestTarget.targetType==0)
+	{
+		x = tX
+	}
+	
+	y = tY;
 
 		//INPUT LIGHT ATTACK (X)
 		if (inputAction && attackEnabled)
 		{
+			//if fourth punch do punch finisher
+			if (lightAttackCount>2)
+			{
+				damage = 1.5 * comboMultiplier;
+				comboMultiplier += 0.07;
+				if (attachSide==0 && !closestTarget.wallToSide)
+				{
+					closestTarget.xspd = 1.5+(maxSpeedNormal/4);
+				}
+				else if (!closestTarget.wallToSide)
+				{
+					closestTarget.xspd = -(1.5+(maxSpeedNormal/4));
+				}
+				//reset grav to normal 
+				closestTarget.grav = 0.12;
+				movementLock=true;
+				closestTarget.enemyState = EnemyState.Shoved;
+				attackState = AttackState.PunchFinisher;
+				playerState = PlayerState.AttackFinish;
+			}
+			//punches 1-3
+			else
+			{
+				damage = 1 * comboMultiplier;
+				comboMultiplier += 0.05;
+				attackState = AttackState.Punch;
+				punchAnim++;
+			}
 			
-			//increases damage by multiplier and adds the hit to the multiplier
-			damage = 1 * comboMultiplier;
-			comboMultiplier += 0.05;
-			
-			/*if (!closestTarget.beenHit){
-			closestTarget.beenHit = true;	
-			
-			}*/
-			//closestTarget.hp -= damage;
-			alarmAttack=45;
-			alarmAttachToTarget=alarmAttack+40;
-			attackState = AttackType.Punch;
-			attackType++;
 			attackEnabled=false;
 			actionsEnabled=false;
-			if (heavyCharges<3) lightAttackCount++;
-			
-			if (closestTarget.enemyState == EnemyState.Launched) {
-			//closestTarget.zspd = -0.5;	
-			}
+			alarmAttack=45;
+			alarmAttachToTarget=alarmAttack+40;
+			lightAttackCount++;
 		}
 		
-		if (lightAttackCount>4)
+		// ADD/CAP CHARGES
+		if (lightAttackCount>3)
 		{
 			lightAttackCount=0;
 			if (heavyCharges<3) heavyCharges++;
 		}
 		
 		// LIGHT ATTACK STATE
-		if (attackState==AttackType.Punch)
+		if (attackState==AttackState.Punch)
 		{
 			
-			if (attackType>1) attackType=0;
+			if (punchAnim>1) punchAnim=0;
 			alarmAttack--;
 			if (alarmAttack < 37) 
 			{
@@ -378,136 +405,196 @@ if (playerState == PlayerState.BasicAttack)
 				actionsEnabled=true;
 			}
 			if (alarmAttack < 0) {
+			playerState = PlayerState.Normal;
+			movementLock=false;
+			}
+		}
+		
+		// LIGHT ATTACK FINISHER 
+		if (attackState==AttackState.PunchFinisher)
+		{
+			alarmAttack--;
+			if (alarmAttack < 28) 
+			{
+				//attackEnabled=true;
+				actionsEnabled=true;
+			}
+			if (alarmAttack < 0) {
 			playerState = PlayerState.Normal;	
+			movementLock=false;
 			}
 		}
 		
 		//INPUT HEAVY ATTACK (Y)
-		if (inputActionSecondary && attackEnabled && heavyCharges>0)
+		if (inputActionSecondary && attackEnabled)
 		{
-			//reverse kick
-			if (movementDirection<270 && movementDirection>90  
-			&& (inputLeft || inputUp || inputDown)) 
+			//slam strike
+			if ((inputLeft || inputUp || inputDown || inputRight) && (heavyCharges>0))
 			{
-				attackState = AttackType.ReverseKick;
+				attackState = AttackState.SlamStrike;
 				
 				//increases damage by multiplier and adds the hit to the multiplier
-				damage = 5 * comboMultiplier;
+				damage = 2.5 * comboMultiplier;
 				comboMultiplier += 0.1;
 				
-				closestTarget.enemyState = EnemyState.Kicked;
+				closestTarget.enemyState = EnemyState.SlamStrike;
 				closestTarget.newSpeed = maxSpeedNormal*2;
 				closestTarget.zspd=8;
 				closestTarget.movementDirection = movementDirection;
 				alarmAttachToTarget=12;
 				attackEnabled=false;
 				actionsEnabled=false;
-					
-			}
-
-			//slam strike
-			else if ((movementDirection<90 && movementDirection >=0) || 
-			(movementDirection<=360 && movementDirection>270)) && (inputRight || inputUp || inputDown)
-			{
-				attackState = AttackType.SlamStrike;
-				closestTarget.enemyState = EnemyState.Slammed;
-				
-				//increases damage by multiplier and adds the hit to the multiplier
-				damage = 5 * comboMultiplier;
-				comboMultiplier += 0.1;
-				
-				if (!closestTarget.wallToSide) closestTarget.xspd=12;
-				alarmAttachToTarget=12;
+				heavyCharges--;
+				alarmMovementLock=40;
+				alarmAttack=20;
+				alarmAttachToTarget=alarmAttack;
+				closestTarget.grav=0.12;
 				attackEnabled=false;
-				actionsEnabled=false;
+				
+				xspd = (lengthdir_x(0.1, movementDirection))/2;
+				yspd = (lengthdir_y(0.1, movementDirection))/2;
+				zspd=-1;
+				grav=0.12;
+				movementLock=false;
+				playerState=PlayerState.AttackFinish;
 			}
-			
 			//launcher
 			else
 			{
+				if (closestTarget.grounded || heavyCharges>1)
+				{
 				//increases damage by multiplier and adds the hit to the multiplier
 				damage = 1 * comboMultiplier;
 				comboMultiplier += 0.01;
-				
-				
-				attackState = AttackType.Launcher;
+
+				attackState = AttackState.Launcher;
 				closestTarget.enemyState = EnemyState.Launched;
 				closestTarget.zspd=-5;
-				playerState=PlayerState.Normal;
 				alarmMovementLock=12;
 				zspd=-4;
 				attackEnabled=false;
 				actionsEnabled=false;
+				if (!closestTarget.grounded) heavyCharges-=2;
+				alarmAttack=40;
+				alarmAttachToTarget=alarmAttack;
+				closestTarget.grav=0.12;
+				attackEnabled=false;
+				playerState=PlayerState.AttackFinish;
+				}
 			}
-			
-			alarmAttack=40;
-			alarmAttachToTarget=alarmAttack;
-			heavyCharges--;
-			attackEnabled=false;
-		}
+		}	
 		
-		// REVERSE KICK STATE
-		if (attackState==AttackType.ReverseKick)
-		{
-
-			alarmAttack--;
-			if (alarmAttack<18) actionsEnabled=true;
-		}
-		
-		// SLAM STRIKE STATE
-		if (attackState==AttackType.SlamStrike)
-		{
-
-			alarmAttack--;
-			if (alarmAttack<18) actionsEnabled=true;
-		}
-		
-		// LAUNCHER STATE
-		if (attackState==AttackType.Launcher)
-		{
-
-			alarmAttack--;
-			if (alarmAttack<18) actionsEnabled=true;
-		}
-	
-
+	// ALLOW FOR JUMPING OUT AND STOMPING
 	if (actionsEnabled)
 	{
 		//set state to stomping
 		if (!grounded)
 		{
-			if (inputStomp)
+			if (inputStomp && !inputUp && !inputDown 
+			&& !inputRight && !inputLeft)
 			{
+				movementLock=false;
 				playerState = PlayerState.Stomping;
-				//movementLock=true;
 			}
 		}
 		
 		if (inputJump)
 		{
+			movementLock=false;
 			playerState = PlayerState.Normal;
 			zspd=-5;
 		}
 	}
 	
-	/*
-	//set state to BackOff
-	if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
-	{
-		alarmAttachToTarget=30;
-		zspd = 2;
-		playerState = PlayerState.BackOff;
-	}*/
-	
 	//end attack state, return to Normal state
 	if (alarmAttachToTarget<0)
 	{
-		attackType=0;
+		punchAnim=0;
 		alarmAttack = 20;
 		movementLock = false;
 		attackEnabled=true;
 		actionsEnabled=true;
 		playerState = PlayerState.Normal;
+	}
+}
+
+//----[ ATTACK FINISH STATE ]--------------------------------------------------------------
+if (playerState == PlayerState.AttackFinish)
+{
+	switch (attackState)
+	{
+		case AttackState.PunchFinisher:
+		movementLock=true;
+		
+		alarmAttack--;
+		
+		//base alarm for this attack: 45
+		//allows for jumping and stomping after 15 frames
+		if (alarmAttack<30)
+		{
+			actionsEnabled=true;
+		}
+		
+		if (alarmAttack<0)
+		{
+			grav=gravNormal;
+			movementLock=false;
+			playerState = PlayerState.Normal;
+		}
+		break;
+		case AttackState.Launcher:
+		//set movement lock back to false
+		grav=gravNormal;
+		alarmMovementLock--;
+		if (alarmMovementLock<0)
+		{
+			movementLock=false;
+		}
+		alarmAttack--;
+		if (alarmAttack<0)
+		{
+			movementLock=false;
+			playerState = PlayerState.Normal;
+		}
+		scrTargetObject();
+		break;
+		case AttackState.SlamStrike:
+
+		alarmMovementLock--;
+		if (alarmMovementLock<0)
+		{
+			movementLock=false;
+		}
+		alarmAttack--;
+		if (alarmAttack<0)
+		{
+			movementLock=false;
+			grav=gravNormal;
+			playerState = PlayerState.Normal;
+		}
+		break;
+	}
+	
+	// ALLOW FOR JUMPING OUT AND STOMPING
+	if (actionsEnabled)
+	{
+		//set state to stomping
+		if (!grounded)
+		{
+			if (inputStomp && !inputUp && !inputDown 
+			&& !inputRight && !inputLeft)
+			{
+				movementLock=false;
+				playerState = PlayerState.Stomping;
+			}
+		}
+		
+		if (inputJump)
+		{
+			movementLock=false;
+			playerState = PlayerState.Normal;
+			zspd=-5;
+		}
 	}
 }
 
@@ -774,7 +861,8 @@ if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead
 }
 
 //DECELERATE X
-if ((!inputRight && !inputLeft) || (inputRight && inputLeft) || movementLock) && (playerState!=PlayerState.Sliding)
+if ((!inputRight && !inputLeft) || (inputRight && inputLeft) || movementLock) 
+&& (playerState!=PlayerState.Sliding) && (playerState!=PlayerState.AttackFinish)
 {
 	if (xspd>0)
 	{
@@ -795,7 +883,8 @@ if ((!inputRight && !inputLeft) || (inputRight && inputLeft) || movementLock) &&
 }
 
 //DECELERATE Y
-if ((!inputUp && !inputDown) || (inputUp && inputDown) || movementLock) && (playerState!=PlayerState.Sliding)
+if ((!inputUp && !inputDown) || (inputUp && inputDown) || movementLock) 
+&& (playerState!=PlayerState.Sliding) && (playerState!=PlayerState.AttackFinish)
 {
 	if (yspd>0)
 	{

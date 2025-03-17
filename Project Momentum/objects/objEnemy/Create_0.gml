@@ -1,8 +1,9 @@
 enum EnemyState {
 	Normal,
 	Dead,
-	Slammed,
-	Kicked,
+	Shoved,
+	Spiked,
+	SlamStrike,
 	SlideLaunched,
 	Launched
 }
