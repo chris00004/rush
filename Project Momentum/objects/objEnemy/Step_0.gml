@@ -76,13 +76,6 @@ switch(enemyState)
 	//SLAM STRIKE STATE
 	case EnemyState.SlamStrike:
 	
-	
-	/*if (beenHit) {
-	hp = hp - objPlayer.damage; 
-	
-	}*/
-	
-	//apply direction and speed from player reverse kick attack
 	if (!kickedMovementApplied)
 	{
 		xspd = lengthdir_x(newSpeed, movementDirection);
@@ -193,108 +186,6 @@ switch(enemyState)
 			enemyState = EnemyState.Normal;
 		}
 	
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
-	break;
-	//apply decceleration
-		xspd-=xDecceleration;
-		yspd-=yDecceleration;
-		//zspd -= zDecceleration;
-		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
-		//if (abs(zspd) < 0.1) zspd = 0;
-	
-		//reset back to normal state
-		if (xspd==0 && yspd==0) 
-		{
-			enemyState = EnemyState.Normal;
-			kickedMovementApplied=false;
-		}
-	}
 	break;
 }
 

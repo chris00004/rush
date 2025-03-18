@@ -42,6 +42,7 @@
     {"name":"objCrane","order":9,"path":"objects/objCrane/objCrane.yy",},
     {"name":"objDashPanel","order":1,"path":"objects/objDashPanel/objDashPanel.yy",},
     {"name":"objDashRampHorizontalFloating","order":5,"path":"objects/objDashRampHorizontalFloating/objDashRampHorizontalFloating.yy",},
+    {"name":"objEnemyArmored","order":2,"path":"objects/objEnemyArmored/objEnemyArmored.yy",},
     {"name":"objEnemyStandard","order":7,"path":"objects/objEnemyStandard/objEnemyStandard.yy",},
     {"name":"objEnemyWeak","order":1,"path":"objects/objEnemyWeak/objEnemyWeak.yy",},
     {"name":"objFence","order":10,"path":"objects/objFence/objFence.yy",},

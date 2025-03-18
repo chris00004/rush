@@ -42,8 +42,10 @@ enum AttackState
 	Launcher, //launches enemy up in the air (low damage, allows juggling)
 	SlamStrike, //slams enemy down to the ground (high damage, high enemy recovery time)
 	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
-	Grab, //
-	BackOff,	//
+	Grab, //Nothing rn
+	comboExtender, //extends your combo and resets your punch counter
+	suplexSlam, //suplexes the enemy behind you, large cost but big damage 
+	BackOff,
 	
 }
 
@@ -82,6 +84,7 @@ alarmMovementLock=14;
 jumpLock=false;
 inputLock=false;
 charLock=false;
+armorLockedAnimation = false;
 
 //Enums
 playerState = 0;
@@ -156,6 +159,7 @@ actionsEnabled = true;
 heavyCharges = 0;
 lightAttackCount = 0;
 attackFinishType=-1;
+heavyChargeCounter = 0;
 
 
 //moving plat

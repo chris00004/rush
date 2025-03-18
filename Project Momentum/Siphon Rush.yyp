@@ -67,6 +67,7 @@
     {"id":{"name":"objDashRampHorizontal","path":"objects/objDashRampHorizontal/objDashRampHorizontal.yy",},},
     {"id":{"name":"objDashRampHorizontalFloating","path":"objects/objDashRampHorizontalFloating/objDashRampHorizontalFloating.yy",},},
     {"id":{"name":"objEnemy","path":"objects/objEnemy/objEnemy.yy",},},
+    {"id":{"name":"objEnemyArmored","path":"objects/objEnemyArmored/objEnemyArmored.yy",},},
     {"id":{"name":"objEnemyStandard","path":"objects/objEnemyStandard/objEnemyStandard.yy",},},
     {"id":{"name":"objEnemyWeak","path":"objects/objEnemyWeak/objEnemyWeak.yy",},},
     {"id":{"name":"objFence","path":"objects/objFence/objFence.yy",},},

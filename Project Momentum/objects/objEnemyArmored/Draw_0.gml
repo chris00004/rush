@@ -2,7 +2,6 @@ if (active)
 {
 draw_set_color(c_white);
 draw_sprite(sprEnemyTestShadow, 0, x, y+zFloor);
-
 if (isArmored && objPlayer.closestTarget == self) {
  	
  	draw_sprite_ext(sprEnemyTest, 0, x, y+z, 1, 1, 0, c_aqua, 1);
@@ -11,12 +10,8 @@ if (isArmored && objPlayer.closestTarget == self) {
  else {
  	draw_sprite(sprEnemyTest, 0, x, y+z);
  }
- 
-draw_text(x-24,y+z,inPlayerRange);
-draw_text(x-24, y+z+12, enemyState);
-draw_text(x+24,y+24, armorHealth);
 
-if (inPlayerRange && objPlayer.closestTarget == self 
+if (objPlayer.closestTarget == self 
 && !collision_line(objPlayer.x,objPlayer.y,x,y,objWall,false,true) 
 && objPlayer.playerState != PlayerState.DialogueNPC)
 {
@@ -40,6 +35,7 @@ if (inPlayerRange && objPlayer.closestTarget == self
 	draw_set_color(c_white);
 }
 
-draw_text(x+24,y,wallToRight);
-draw_text(x+24,y+12,wallToLeft);
+draw_text(x+24,y,grav);
+draw_text(x+24,y+12,xspd);
+draw_text(x+24,y+24, armorHealth);
 }

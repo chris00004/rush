@@ -1,3 +1,13 @@
+enum EnemyState {
+	Normal,
+	Dead,
+	Shoved,
+	Spiked,
+	SlamStrike,
+	SlideLaunched,
+	Launched,
+	Suplexed
+}
 
 event_inherited();
 hpInitial = 5;
@@ -22,8 +32,8 @@ wallToSide=false;
 grounded=false;
 beenHit=false;
 hitStun = 0;
-
-isArmored=true;
-armorHealth=7;
-armorTimer=300;
+isArmored = false;
+chuckedAtX = 0;
+chuckedAtY = 0;
+chuckedAtZ = 0;
 

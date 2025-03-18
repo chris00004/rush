@@ -280,10 +280,13 @@ if (playerState == PlayerState.AttachToTarget)
 			attackEnabled=true;
 			playerState = PlayerState.BasicAttack;
 		}
+		else if (keyStomp && alarmAttachToTarget<26 && closestTarget.hp!=pointer_null) {
+		
+		}
 
 		
 			//set state to stomping
-		if (!grounded && !closestTarget.weak)
+		if (!grounded && !closestTarget.weak && !(inputLeft || inputRight || inputUp || inputDown))
 		{
 			if (inputStomp)
 			{
@@ -372,7 +375,7 @@ if (playerState == PlayerState.BasicAttack)
 			}
 			//punches 1-3
 			else
-			(movementDirection<=360 && movementDirection>270) && (inputRight || inputUp || inputDown))*/
+			{
 				damage = 1 * comboMultiplier;
 				comboMultiplier += 0.05;
 				attackState = AttackState.Punch;
@@ -381,29 +384,35 @@ if (playerState == PlayerState.BasicAttack)
 			
 			attackEnabled=false;
 			actionsEnabled=false;
-			alarmAttack=45;
+			alarmAttack=24;
 			alarmAttachToTarget=alarmAttack+40;
 			lightAttackCount++;
-		}
+			heavyChargeCounter++;
+			
 		}
 		
 		// ADD/CAP CHARGES
 		if (lightAttackCount>3)
 		{
 			lightAttackCount=0;
-			if (heavyCharges<3) heavyCharges++;
+			
 		}
 		
+		if (heavyCharges<5 && heavyChargeCounter > 5) {
+			heavyCharges++;
+			heavyChargeCounter = 0;
+		}
 		// LIGHT ATTACK STATE
 		if (attackState==AttackState.Punch)
 		{
+			
 			if (punchAnim>1) punchAnim=0;
-			//if (attackType>1) attackType=0;
 			alarmAttack--;
-			if (alarmAttack < 37) 
+			if (alarmAttack < 21) 
 			{
 				attackEnabled=true;
 				actionsEnabled=true;
+			}
 			if (alarmAttack < 0) {
 			playerState = PlayerState.Normal;
 			movementLock=false;
@@ -424,66 +433,150 @@ if (playerState == PlayerState.BasicAttack)
 			movementLock=false;
 			}
 		}
-		}
 		
+		//INPUT HEAVY ATTACK (Y)
 		if (inputActionSecondary && attackEnabled)
-		if (inputActionSecondary && attackEnabled /*&& heavyCharges>0*/)
-			//slam strike
+		{
+			//combo extender
 			if ((inputLeft || inputUp || inputDown || inputRight) && (heavyCharges>0))
-			(movementDirection<=360 && movementDirection>270)) && (inputRight || inputUp || inputDown) && heavyCharges > 0)
-				attackState = AttackState.SlamStrike;
-				attackState = AttackType.ComboExtender;
+			{
+				attackState = AttackState.comboExtender;
 				
-				damage = 2.5 * comboMultiplier;
+				//increases damage by multiplier and adds the hit to the multiplier
 				damage = 2 * comboMultiplier;
 				comboMultiplier += 0.1;
-				closestTarget.enemyState = EnemyState.SlamStrike;
-				closestTarget.newSpeed = maxSpeedNormal*2;
-				closestTarget.zspd=8;
-				closestTarget.movementDirection = movementDirection;
+				
+				lightAttackCount = 0;
+				
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;
+				armorLockedAnimation=true;	
+				}
+				else {
+				
+				}
+				
+				
 				alarmAttachToTarget=12;
-				heavyCharges--;
 				attackEnabled=false;
+				actionsEnabled=false;
 				heavyCharges--;
 				alarmMovementLock=40;
 				alarmAttack=20;
 				alarmAttachToTarget=alarmAttack;
-				closestTarget.grav=0.12;
-				attackEnabled=false;
-				
-				xspd = (lengthdir_x(0.1, movementDirection))/2;
-				yspd = (lengthdir_y(0.1, movementDirection))/2;
-				zspd=-1;
-				grav=0.12;
-				movementLock=false;
-				playerState=PlayerState.AttackFinish;
 			}
-			
 			//launcher
-			else
+			else if (closestTarget.enemyState != EnemyState.Launched)
 			{
-				if (closestTarget.grounded || heavyCharges>1)
-				{
-				//increases damage by multiplier and adds the hit to the multiplier
-				damage = 1 * comboMultiplier;
-
+					
 				attackState = AttackState.Launcher;
-				closestTarget.enemyState = EnemyState.Launched;
+				
+				damage = 1 * comboMultiplier;
+				comboMultiplier += 0.01;
+				//increases damage by multiplier and adds the hit to the multiplier
+				
+				
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;
+				armorLockedAnimation=true;	
+				}
+				else {
 					closestTarget.enemyState = EnemyState.Launched;
 				closestTarget.zspd=-5;
-				//playerState = PlayerState.Normal;
 				alarmMovementLock=12;
 				zspd=-4;
+				}
+				
+
+				
+				
 				attackEnabled=false;
-				if (!closestTarget.grounded) heavyCharges-=2;
+				actionsEnabled=false;
 				alarmAttack=40;
 				alarmAttachToTarget=alarmAttack;
 				closestTarget.grav=0.12;
 				attackEnabled=false;
 				playerState=PlayerState.AttackFinish;
 				}
+				
+			else if (heavyCharges >= 2 && closestTarget.enemyState == EnemyState.Launched) {
+				//increases damage by multiplier and adds the hit to the multiplier
+				attackState = AttackState.Launcher;
+				damage = 1 * comboMultiplier;
+				comboMultiplier += 0.01;
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;
+				armorLockedAnimation=true;	
+				}
+				else {
+					closestTarget.enemyState = EnemyState.Launched;
+				closestTarget.zspd=-5;
+				alarmMovementLock=12;
+				zspd=-4;
+				}
+				heavyCharges -= 2;
+				attackEnabled=false;
+				actionsEnabled=false;
+				alarmAttack=40;
+				alarmAttachToTarget=alarmAttack;
+				closestTarget.grav=0.12;
+				attackEnabled=false;
+				playerState=PlayerState.AttackFinish;
 			}
-		}	
+		}
+		
+		// COMBO EXTENDER STATE
+		if (attackState==AttackState.comboExtender)
+		{
+
+			alarmAttack--;
+			if (alarmAttack<30) {
+				attackEnabled = true;
+				actionsEnabled=true;
+			}
+		} 
+		
+		if (inputStomp && attackEnabled) {
+		//slam strike
+			if ((inputLeft || inputUp || inputDown || inputRight) && (heavyCharges>0))
+			{
+				attackState = AttackState.SlamStrike;
+				
+				//increases damage by multiplier and adds the hit to the multiplier
+				damage = 2 * comboMultiplier;
+				comboMultiplier += 0.1;
+				
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;
+				armorLockedAnimation=true;	
+				}
+				else {
+				closestTarget.enemyState = EnemyState.SlamStrike;
+				closestTarget.newSpeed = maxSpeedNormal*2;
+				closestTarget.zspd=8;
+				closestTarget.movementDirection = movementDirection;
+				closestTarget.grav=0.12;
+				xspd = (lengthdir_x(0.1, movementDirection))/2;
+				yspd = (lengthdir_y(0.1, movementDirection))/2;
+				zspd=-1;
+				grav=0.12;
+				}
+				
+				
+				alarmAttachToTarget=12;
+				attackEnabled=false;
+				actionsEnabled=false;
+				heavyCharges--;
+				alarmMovementLock=40;
+				alarmAttack=20;
+				alarmAttachToTarget=alarmAttack;
+				attackEnabled=false;
+				
+				
+				movementLock=false;
+				playerState=PlayerState.AttackFinish;
+			}	
+		}
 		
 	// ALLOW FOR JUMPING OUT AND STOMPING
 	if (actionsEnabled)
@@ -531,7 +624,7 @@ if (playerState == PlayerState.AttackFinish)
 		
 		//base alarm for this attack: 45
 		//allows for jumping and stomping after 15 frames
-		if (alarmAttack<30)
+		if (alarmAttack<30 && !armorLockedAnimation)
 		{
 			actionsEnabled=true;
 		}
@@ -547,7 +640,7 @@ if (playerState == PlayerState.AttackFinish)
 		//set movement lock back to false
 		grav=gravNormal;
 		alarmMovementLock--;
-		if (alarmMovementLock<0)
+		if (alarmMovementLock<0 && !armorLockedAnimation)
 		{
 			movementLock=false;
 		}
@@ -562,104 +655,21 @@ if (playerState == PlayerState.AttackFinish)
 		case AttackState.SlamStrike:
 
 		alarmMovementLock--;
-		if (alarmMovementLock<0)
-				zTemp = z;
+		if (alarmMovementLock<0 && !armorLockedAnimation)
+		{
 			movementLock=false;
 		}
 		alarmAttack--;
 		if (alarmAttack<0)
-				for (var i = 0; i < ds_list_size(targetList); i++) {
+		{
 			movementLock=false;
 			grav=gravNormal;
 			playerState = PlayerState.Normal;
 		}
 		break;
+		
+		
 	}
-				if (closestTarget.isArmored) {
- 				closestTarget.armorHealth -= damage;
-				armorLockedAnimation=true;
- 				}
-				else {
-					//launches the target in the direction and deals damage
-				if (!closestTarget.wallToSide) closestTarget.xspd= 1.5 * maxSpeedNormal;
-				alarmAttachToTarget=12;
-				
-				}
-				attackEnabled=false;
-				actionsEnabled=false;
-				heavyCharges--;
-				}
-				else {
-					
-				var tempX = (tempClosestTarget.x - x);
-				var tempY = (tempClosestTarget.y - y);
-				var tempZ = (tempClosestTarget.z - z);
-	
-				var tempLen = sqrt(sqrt(tempX) + sqrt(tempY) + sqrt(tempZ));
-			
-			
-			}
-		} 
-		
-		if (attackState == AttackType.GrabChuck) {
-			z = zTemp;
-			attackType = 0;
-			alarmAttack--;
-			if (alarmAttack < 10) {
-			actionsEnabled = true;	
-			}
-		}
-		
-		if (attackState == AttackType.GrabChuckBack) {
-			z = zTemp;
-			attackType = 0;
-			alarmAttack--;
-			if (alarmAttack < 10) {
-			actionsEnabled = true;	
-			}
-		}
-		
-		if (attackState == AttackType.GrabToss) {
-			z = zTemp;
-			attackType = 0;
-			alarmAttack--;
-			if (alarmAttack < 10) {
-			actionsEnabled = true;	
-			}
-		} */
-		
-		// COMBO EXTENDER STATE
-		if (attackState==AttackType.ComboExtender)
-		if (attackState==AttackType.ComboExtender)
-		{
-
-			alarmAttack--;
-			if (alarmAttack<30) {
-				attackEnabled = true;
-				actionsEnabled=true;
-			}
-		} 
-		
-		// LAUNCHER STATE
-		if (attackState==AttackType.Launcher)
-		{
-			//sets z to ztemp so you stay in spot while launching rather than following them up
-			z = zTemp;
-			attackType = 0;
-			alarmAttack--;
-			//if the enemy isn't armored, you can cancel the launcher animation immediately
-			//allowing you to follow up with whatever
-			if (alarmAttack<30 && !armorLockedAnimation) {
-			actionsEnabled=true;
-			if (inputAction) { //if the player inputs a basic attack during the animation, 
-				//cancels it allowing them to go straight into either regrappling to the enemy or jumping to something else
-				playerState = PlayerState.Normal;
-				zspd += -6;
-			}
-			
-			}
-			
-		}
 	
 	// ALLOW FOR JUMPING OUT AND STOMPING
 	if (actionsEnabled)
@@ -681,28 +691,6 @@ if (playerState == PlayerState.AttackFinish)
 			playerState = PlayerState.Normal;
 			zspd=-5;
 		}
-		
-		
-	}
-	
-	/*
-	//set state to BackOff
-	if (attachSide == 0 && inputActionSecondary) || (attachSide == 1 && inputActionSecondary)
-	{
-		alarmAttachToTarget=30;
-		zspd = 2;
-		playerState = PlayerState.BackOff;
-	}*/
-	
-	//end attack state, return to Normal state
-	if (alarmAttachToTarget<0)
-	{
-		attackType=0;
-		alarmAttack = 10;
-		movementLock = false;
-		attackEnabled=true;
-		actionsEnabled=true;
-		playerState = PlayerState.Normal;
 	}
 }
 
