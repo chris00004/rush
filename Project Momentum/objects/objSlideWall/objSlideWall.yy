@@ -10,8 +10,8 @@
   "name":"objSlideWall",
   "overriddenProperties":[],
   "parent":{
-    "name":"parentObjects",
-    "path":"folders/Objects/parentObjects.yy",
+    "name":"stageObjects",
+    "path":"folders/Objects/stageObjects.yy",
   },
   "parentObjectId":{
     "name":"objWall",
