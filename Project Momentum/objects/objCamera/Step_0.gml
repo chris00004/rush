@@ -16,6 +16,11 @@ switch(camMode)
 	}
 	break;
 	
+	case CameraMode.IntroCustscene:
+		camX=objIntroCutsceneController.x;
+		camY=objIntroCutsceneController.y;
+	break;
+	
 }
 
 camera_set_view_pos(view_camera[0], camX, camY);

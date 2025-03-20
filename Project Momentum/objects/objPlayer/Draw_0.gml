@@ -1,6 +1,9 @@
 if (playerState != PlayerState.Dead)
 {
+	if (!dropShadowRails)
+	{
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
+	}
 		if (playerState == PlayerState.Sliding) draw_sprite(sprAnimSlide, animFrameRun, x, y+z);
 		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);

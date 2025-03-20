@@ -280,8 +280,11 @@ if (playerState == PlayerState.AttachToTarget)
 			attackEnabled=true;
 			playerState = PlayerState.BasicAttack;
 		}
-		else if (keyStomp && alarmAttachToTarget<26 && closestTarget.hp!=pointer_null) {
-		
+		else if (inputStomp && (inputLeft || inputRight || inputUp || inputDown) 
+		&& alarmAttachToTarget<26 && closestTarget.hp!=pointer_null) 
+		{
+			attackEnabled=true;
+			playerState = PlayerState.BasicAttack;
 		}
 
 		
@@ -384,7 +387,7 @@ if (playerState == PlayerState.BasicAttack)
 			
 			attackEnabled=false;
 			actionsEnabled=false;
-			alarmAttack=24;
+			alarmAttack=32;
 			alarmAttachToTarget=alarmAttack+40;
 			lightAttackCount++;
 			heavyChargeCounter++;
@@ -694,6 +697,36 @@ if (playerState == PlayerState.AttackFinish)
 	}
 }
 
+if (playerState == PlayerState.ActionRailGrind)
+{
+	landed=false;
+	momentumLoss=false;
+	alarmMomentumLoss=15;
+	movementLock=true;
+	xspd=maxSpeedNormal*sign(xspd);
+	grav=0;
+	if (inputJump)
+	{
+		movementLock=false;
+		playerState = PlayerState.Normal;
+		zspd=-5;
+	}
+	
+	if (inputAction)
+	{
+		xspd+=0.3;
+		maxSpeedNormal+=0.5;
+	}
+	
+	if (!place_meeting(x,y,objFenceRailTrigger))
+	{
+		dropShadowRails=false;
+		playerState = PlayerState.Normal;
+		grav = gravNormal;
+		movementLock=false;
+	}
+}
+
 //COMBO METER
 if (maxSpeedNormal>3)
 {
@@ -738,31 +771,6 @@ if (playerState == PlayerState.EnemyBounce)
 	}
 }
 
-//BACKOFF STATE
-if (playerState == PlayerState.BackOff)
-{
-	if (maxSpeedNormal>5) maxSpeedNormal=5;
-	movementLock=true;
-	grav = gravNormal;
-	if (attachSide == 0)
-	{
-		xspd = -5;
-		
-	}
-	else
-	{
-		xspd = 5;
-		
-	}
-	
-	
-	//end backoff state, return to normal state
-	if (grounded) 
-	{
-		playerState = PlayerState.Normal;
-		movementLock=false;
-	}
-}
 
 //DIALOGUE NPC STATE
 if (playerState == PlayerState.DialogueNPC)
@@ -939,9 +947,9 @@ if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead
 		xspd+=angleAccelerationX;
 		yspd+=angleAccelerationY;
 	
-	/*
+	
 		// Calculate current speed
-		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));*/
+		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));
 
 		//CAP SPEED
 		
@@ -959,6 +967,7 @@ if (!inputLock && !movementLock  && !charLock && playerState != PlayerState.Dead
 //DECELERATE X
 if ((!inputRight && !inputLeft) || (inputRight && inputLeft) || movementLock) 
 && (playerState!=PlayerState.Sliding) && (playerState!=PlayerState.AttackFinish)
+&& (playerState!=PlayerState.ActionRailGrind)
 {
 	if (xspd>0)
 	{
@@ -981,6 +990,7 @@ if ((!inputRight && !inputLeft) || (inputRight && inputLeft) || movementLock)
 //DECELERATE Y
 if ((!inputUp && !inputDown) || (inputUp && inputDown) || movementLock) 
 && (playerState!=PlayerState.Sliding) && (playerState!=PlayerState.AttackFinish)
+&& (playerState!=PlayerState.ActionRailGrind)
 {
 	if (yspd>0)
 	{

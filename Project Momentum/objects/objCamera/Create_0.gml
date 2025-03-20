@@ -1,8 +1,9 @@
 enum CameraMode
 {
 	FollowPlayer,
-	MoveToTarget,
-	MoveToFollowTarget,
+	//MoveToTarget,
+	//MoveToFollowTarget,
+	IntroCustscene,
 }
 
 camMode=0;

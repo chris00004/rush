@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"sprFence",
   "bboxMode":2,
-  "bbox_bottom":47,
+  "bbox_bottom":46,
   "bbox_left":0,
   "bbox_right":47,
   "bbox_top":39,

@@ -15,8 +15,7 @@ enum PlayerState
 	SlamDown, //slams enemy down to the ground (high damage, high enemy recovery time)
 	Chuck, //chucks enemy in the direction you attached to it (low damage, high damage to another enemy if it collides)
 	Grab, //
-	BackOff,	
-	Parry,
+	ActionRailGrind,
 	ActionDashPanel,
 	ActionDashRamp,
 	ActionSpringBoard,
@@ -77,6 +76,7 @@ alarmMomentumLoss = 10;
 
 //sliding
 alarmSliding = 120;
+fenceSliding = false;
 
 //locks
 movementLock=false;
@@ -85,6 +85,7 @@ jumpLock=false;
 inputLock=false;
 charLock=false;
 armorLockedAnimation = false;
+
 
 //Enums
 playerState = 0;
@@ -105,6 +106,7 @@ alarmAnimSpeedRun = 4;
 animFrameIdle=0;
 animFrameRun=0;
 animDirection=0;
+dropShadowRails=0;
 
 
 //dash panel

@@ -4,8 +4,6 @@
 //player related
 if(instance_exists(objPlayer))
 {
-if (objPlayer.playerState!=PlayerState.DialogueNPC)
-{
 	/*
 draw_sprite(sprPlayerHud,1,camX,camY);
 draw_set_color(c_black)
@@ -42,7 +40,7 @@ if (objPlayer.alarmStageEnd<0)
 	draw_sprite_ext(sprScreenBlack,0,camX,camY,1,1,0,c_black,alpha);
 }
 
-
+/*
 //draw timer
 if (seconds<10)
 {
@@ -58,7 +56,7 @@ draw_text(camX+17,camY+1,string(minutes)+":"+string(seconds));
 draw_set_color(c_white)
 draw_text(camX+16,camY+1,string(minutes)+":"+string(seconds));
 }
-}
+
 
 // (X)
 if (objPlayer.inputActionHold) draw_set_color(c_red);
@@ -83,7 +81,7 @@ draw_circle(camX+120,camY+164,11,false);
 draw_set_color(c_white);
 draw_sprite_ext(sprTestCircle,objPlayer.inputUp || objPlayer.inputDown || objPlayer.inputRight
 || objPlayer.inputLeft,camX+121,camY+165,1,1,objPlayer.movementDirection-90,c_white,1);
-}
+
 //LB
 if (objPlayer.inputActionLeftHold) draw_set_color(c_red);
 else draw_set_color(c_white);
@@ -115,4 +113,5 @@ draw_set_font(gameFont);
 draw_text(camX+viewWidth-128,camY+130,string_format(objPlayer.comboMultiplier,0,1));
 draw_set_color(c_white);
 draw_text(camX+viewWidth-126,camY+130,string_format(objPlayer.comboMultiplier,0,1));
-draw_set_font(fntPlayerHUD);
+draw_set_font(fntPlayerHUD);*/
+}
