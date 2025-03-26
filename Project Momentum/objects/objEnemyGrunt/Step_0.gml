@@ -73,6 +73,7 @@ if (grounded && place_meeting(x,y,objPlayer) && objPlayer.playerState == PlayerS
 //STATES
 switch(enemyState)
 {
+	
 	case EnemyState.Normal:
 	
 	if (isActive && 
@@ -80,8 +81,8 @@ switch(enemyState)
 	(objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.HomeIn || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self)) {
 		if (alarmChangeDirection <= 0) {
 			randomize();
-			xspd = random_range(2.0, 2.5) * random_range(-1, 1);
-			yspd = random_range(2.0,2.5) * random_range(-1, 1);
+			xspd = random_range(3.0, 3.5) * random_range(-1, 1);
+			yspd = random_range(3.0,3.5) * random_range(-1, 1);
 			
 			alarmChangeDirection = random(300);
 		}
@@ -89,7 +90,9 @@ switch(enemyState)
 		alarmChangeDirection--;
 		
 		if (alarmChooseAction <= 0) {
+			var instanceBullet = instance_create_layer(self.x, self.y, "InstanceLayer", objBullet);
 			
+			alarmChooseAction = 150;
 		}
 		
 		alarmChooseAction--;
@@ -113,7 +116,7 @@ switch(enemyState)
 	
 	//SLAM STRIKE STATE
 	case EnemyState.SlamStrike:
-	
+	speed = 0;
 	if (!kickedMovementApplied)
 	{
 		xspd = lengthdir_x(newSpeed, movementDirection);
@@ -143,7 +146,7 @@ switch(enemyState)
 	
 	//SHOVED STATE
 	case EnemyState.Shoved:
-	
+	speed = 0;
 	if (!kickedMovementApplied)
 	{
 		xDecceleration = xspd/40;
@@ -167,7 +170,7 @@ switch(enemyState)
 	
 	//SPIKED
 	case EnemyState.Spiked:
-	
+	speed = 0;
 	if (!kickedMovementApplied)
 	{
 		xDecceleration = xspd/40;
@@ -200,6 +203,7 @@ switch(enemyState)
 	
 	//JUGGLING STATE
 	case EnemyState.Launched:
+	speed = 0;
 		if (zspd>=0) 
 		{
 			grav=0.04;
@@ -213,7 +217,7 @@ switch(enemyState)
 	
 	//SLIDE LAUNCHING STATE
 	case EnemyState.SlideLaunched:
-		
+		speed = 0;
 		//stop moving if speed close to 0
 		if (abs(xspd) < 0.1) xspd = 0;
 		if (abs(yspd) < 0.1) yspd = 0;
@@ -283,7 +287,7 @@ else
             yspd *= -1;
             yDecceleration *= -1;
         }
-        else yspd *= -1;;
+        else yspd *= -1;
     }
 
     // Then handle X collision
