@@ -1,21 +1,11 @@
-enum EnemyState {
-	Normal,
-	Dead,
-	Shoved,
-	Spiked,
-	SlamStrike,
-	SlideLaunched,
-	Launched,
-	Suplexed
-}
 
 event_inherited();
 hpInitial = 5;
 hp = 20;
 weak = false;
 isEnemy=true;
-xspd=0;
-yspd=0;
+xspd=1;
+yspd=1;
 zspd=0;
 newSpeed=0;
 movementDirection=0;
@@ -37,5 +27,7 @@ chuckedAtX = 0;
 chuckedAtY = 0;
 chuckedAtZ = 0;
 alarmChangeDirection = 0;
-isActive = false;
 alarmChooseAction = 0;
+isActive = false;
+direction = 0; 
+
