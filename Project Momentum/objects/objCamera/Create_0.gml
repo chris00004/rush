@@ -7,6 +7,7 @@ enum CameraMode
 }
 
 camMode=0;
+if (room==rmIntroCutsceneStage) camMode=1;
 
 if (room = rmCompanionTest) following = objCompanionBot;
 else following = objPlayer;

@@ -4,7 +4,16 @@ if (playerState != PlayerState.Dead)
 	{
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
 	}
-		if (playerState == PlayerState.Sliding) draw_sprite(sprAnimSlide, animFrameRun, x, y+z);
+		if (playerState == PlayerState.Sliding) 
+		{
+			if (animDirection>90 && animDirection<270)
+			{
+				draw_sprite_ext(sprXSlideHorizontal, animFrameRun, x, y+z,-1,1,0,c_white,1);
+			}
+			else{
+				draw_sprite_ext(sprXSlideHorizontal, animFrameRun, x, y+z,1,1,0,c_white,1);
+			}
+		}
 		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
 		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
@@ -42,10 +51,41 @@ if (playerState != PlayerState.Dead)
 		}
 		
 		//draws left or right air sprites depending on speed and what side they're attached to the enemy
-		else if (!grounded && xspd >= 0 && attachSide != 1) draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
-		else if (!grounded && (xspd < 0 || attachSide = 1)) draw_sprite_ext(sprXFallRight, 0, x, y+z, -1, 1, 0, c_white, 1);
+		else if (!grounded) 
+		{
+			if (animDirection>90 && animDirection<270)
+			{
+				draw_sprite_ext(sprXFallRight, 0, x, y+z, -1, 1, 0, c_white, 1);
+			}
+			else
+			{
+				draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
+			}
+		}
 		
-		else draw_sprite(sprXIdleRight, 1, x, y+z);
+		else 
+		{
+			//left
+			if (animDirection>=135 && animDirection<=225)
+			{
+				draw_sprite_ext(sprXIdleRight, 1, x, y+z,-1,1,0,c_white,1);
+			}
+			//up
+			else if (animDirection>45 && animDirection<135)
+			{
+				draw_sprite(sprXIdleUp, 1, x, y+z);
+			}
+			//down
+			else if (animDirection>225 && animDirection<315)
+			{
+				draw_sprite(sprXIdleDown, 1, x, y+z);
+			}
+			//right
+			else
+			{
+				draw_sprite(sprXIdleRight, 1, x, y+z);
+			}
+		}
 		
 		//boost icon
 		/*
@@ -78,7 +118,8 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 
 draw_text(x+24,y-6,xspd);
 draw_text(x+24,y+6,playerState);
-draw_text(x+24,y+18,movementDirection);
+
+draw_text(x+24,y+18,animDirection);
 draw_text(x+24,y-30, maxSpeedNormal);
 
 switch(heavyCharges)
