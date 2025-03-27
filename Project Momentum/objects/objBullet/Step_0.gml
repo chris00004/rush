@@ -14,7 +14,12 @@ if (z>zFloor-24)
 	//instance_destroy(self);
 }
 
-
+if (place_meeting(x, y, objPlayer) && (z >= objPlayer.z && z <= objPlayer.z + 10)){
+objPlayer.playerState = PlayerState.hitByEnemy;
+objPlayer.hp -= 1;
+objPlayer.zspd = -2;
+instance_destroy(self);	
+}
 if (abs(xspd) > abs(yspd)) 
 {
     // Handle X collision first

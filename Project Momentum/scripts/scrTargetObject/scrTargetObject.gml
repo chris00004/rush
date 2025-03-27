@@ -44,7 +44,7 @@ function scrTargetObject()
 	
 	
     // If a target is found and the input action is triggered, set the player state to HomeIn
-    if (closestTarget != noone && inputAction && !collision_line(x,y,closestTarget.x,closestTarget.y,objWall,false,true))
+    if (closestTarget != noone && inputAction && !collision_line(x,y,closestTarget.x,closestTarget.y,objWall,false,true) && playerState != PlayerState.hitByEnemy)
     {
         playerState = PlayerState.HomeIn;
         grav = 0;

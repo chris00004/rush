@@ -3,6 +3,7 @@ enum PlayerState
 {
 	Normal,
 	Dead,
+	hitByEnemy,
 	HomeIn,
 	AttachToTarget,
 	Sliding,
@@ -129,6 +130,9 @@ lastPosY = y;
 lastPosZ = -96;
 alarmRespawn = 40;
 
+//hit by enemy alarm
+alarmInvuln = 100;
+
 //floor and pits
 abovePit = false;
 grounded = true;
@@ -163,6 +167,8 @@ lightAttackCount = 0;
 attackFinishType=-1;
 heavyChargeCounter = 0;
 
+//health
+hp = 5;
 
 //moving plat
 movingPlatLock=false;

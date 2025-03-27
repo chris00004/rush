@@ -18,6 +18,13 @@ if (playerState != PlayerState.Dead)
 		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
 		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
 		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
+		else if (playerState == PlayerState.hitByEnemy) {
+		if (alarmInvuln >= 0) {
+		if (alarmInvuln % 10 = 0) {
+			draw_sprite_ext(sprXFallRight, 2, x, y+z, 1, 1, 0, c_red, 1);
+		}
+		}
+		}
 		else if (playerState == PlayerState.BasicAttack 
 		|| playerState == PlayerState.AttackFinish)
 		{
