@@ -1,3 +1,5 @@
+if (instance_exists(objPlayer))
+{
 //position
 x = objPlayer.x+objPlayer.xspd;
 y = objPlayer.y+objPlayer.yspd+13;
@@ -31,3 +33,4 @@ if (mode==1)
 
 if (draw == 1) image_alpha = 1;
 else image_alpha = 0;
+}

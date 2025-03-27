@@ -1,0 +1,1 @@
+draw_sprite(sprConveyorBelt,frame,x,y);

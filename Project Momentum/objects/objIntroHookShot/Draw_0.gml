@@ -1,0 +1,1 @@
+draw_sprite_ext(sprTriHook,0,x,y+z,1,1,angle,c_white,1);

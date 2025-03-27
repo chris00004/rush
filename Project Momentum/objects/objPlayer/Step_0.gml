@@ -1138,11 +1138,25 @@ if (alarmAnimSpeedIdle<0)
 	alarmAnimSpeedIdle = 6;
 }
 
-if (inputRight || inputLeft || inputDown || inputUp) alarmAnimSpeedRun--;
+if (inputRight || inputLeft || inputDown || inputUp) 
+{
+	alarmAnimSpeedRun--;
+}
 else animFrameRun = 0;
+
 if (alarmAnimSpeedRun<0) 
 {
 	animFrameRun++;
 	if (currentSpeed<3)  alarmAnimSpeedRun = 4;
 	else alarmAnimSpeedRun = 4-(currentSpeed/5);
+}
+
+if ((inputRight || inputLeft || inputDown || inputUp) && (!movementLock)
+&& (playerState == PlayerState.Normal))
+{
+	animDirection=movementDirection;
+}
+else if (playerState != PlayerState.Normal)
+{
+	animDirection=point_direction(0, 0, xspd, yspd);
 }
