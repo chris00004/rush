@@ -125,7 +125,23 @@ if (playerState == PlayerState.Sliding)
 	else jumpLock = false;
 }
 
+//-----[ Hit by enemy STATE ]-----------------------------------------------------------------------------------------------------------------------------
+if (playerState == PlayerState.hitByEnemy) {
+
+alarmInvuln--;
+
+if (alarmInvuln <= 0) {
+playerState = PlayerState.Normal;
+alarmInvuln = 100;
+}
+}
+
+
 //-----[ DEAD STATE ]-----------------------------------------------------------------------------------------------------------------------------
+if (hp <= 0) {
+playerState = PlayerState.Dead;	
+}
+
 if (playerState == PlayerState.Dead)
 {
 	xspd = 0;
@@ -137,6 +153,7 @@ if (playerState == PlayerState.Dead)
 	//set up variables for respawn
 	if (alarmRespawn<0)
 	{
+		hp = 5;
 		x = lastPosX;
 		y = lastPosY;
 		z = lastPosZ;
@@ -361,6 +378,12 @@ if (playerState == PlayerState.BasicAttack)
 			{
 				damage = 1.5 * comboMultiplier;
 				comboMultiplier += 0.07;
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;	
+				}
+				else {
+				closestTarget.hp -= damage;	
+				}
 				if (attachSide==0 && !closestTarget.wallToSide)
 				{
 					closestTarget.xspd = 1.5+(maxSpeedNormal/4);
@@ -381,6 +404,12 @@ if (playerState == PlayerState.BasicAttack)
 			{
 				damage = 1 * comboMultiplier;
 				comboMultiplier += 0.05;
+				if (closestTarget.isArmored) {
+				closestTarget.armorHealth -= damage;	
+				}
+				else {
+				closestTarget.hp -= damage;	
+				}
 				attackState = AttackState.Punch;
 				punchAnim++;
 			}
@@ -449,16 +478,13 @@ if (playerState == PlayerState.BasicAttack)
 				damage = 2 * comboMultiplier;
 				comboMultiplier += 0.1;
 				
-				lightAttackCount = 0;
-				
 				if (closestTarget.isArmored) {
-				closestTarget.armorHealth -= damage;
-				armorLockedAnimation=true;	
+				closestTarget.armorHealth -= damage;	
 				}
 				else {
-				
+				closestTarget.hp -= damage;	
 				}
-				
+				lightAttackCount = 0;
 				
 				alarmAttachToTarget=12;
 				attackEnabled=false;
@@ -476,6 +502,8 @@ if (playerState == PlayerState.BasicAttack)
 				
 				damage = 1 * comboMultiplier;
 				comboMultiplier += 0.01;
+				
+				
 				//increases damage by multiplier and adds the hit to the multiplier
 				
 				
@@ -484,6 +512,7 @@ if (playerState == PlayerState.BasicAttack)
 				armorLockedAnimation=true;	
 				}
 				else {
+					closestTarget.hp -= damage;
 					closestTarget.enemyState = EnemyState.Launched;
 				closestTarget.zspd=-5;
 				alarmMovementLock=12;
@@ -512,6 +541,7 @@ if (playerState == PlayerState.BasicAttack)
 				armorLockedAnimation=true;	
 				}
 				else {
+					closestTarget.hp -= damage;
 					closestTarget.enemyState = EnemyState.Launched;
 				closestTarget.zspd=-5;
 				alarmMovementLock=12;
@@ -554,6 +584,7 @@ if (playerState == PlayerState.BasicAttack)
 				armorLockedAnimation=true;	
 				}
 				else {
+				closestTarget.hp -= damage;
 				closestTarget.enemyState = EnemyState.SlamStrike;
 				closestTarget.newSpeed = maxSpeedNormal*2;
 				closestTarget.zspd=8;

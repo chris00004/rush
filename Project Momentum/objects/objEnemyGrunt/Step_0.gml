@@ -75,16 +75,33 @@ switch(enemyState)
 {
 	
 	case EnemyState.Normal:
-	
+	//if the enemy is active and the player isn't attached to the enemy/attacking the enemy
 	if (isActive && 
 	!(
 	(objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.HomeIn || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self)) {
+		//if the change direction timer is counted down
 		if (alarmChangeDirection <= 0) {
 			randomize();
-			xspd = random_range(3.0, 3.5) * random_range(-1, 1);
-			yspd = random_range(3.0,3.5) * random_range(-1, 1);
+			var randomVar = random_range(0, 100);
+			if (randomVar >= 0 && randomVar < 25) {
+				xspd = 2;
+				yspd = 0;
+			}
+			else if (randomVar >= 25 && randomVar < 50) {
+				xspd = 0;
+				yspd = 2;
+			}
+			else if (randomVar >= 50 && randomVar < 75) {
+				xspd = 0;
+				yspd = -2;
+			}
+			else {
+				xspd = -2;
+				yspd = 0;
+			}
 			
-			alarmChangeDirection = random(300);
+			
+			alarmChangeDirection = random(100);
 		}
 		
 		alarmChangeDirection--;
@@ -249,10 +266,13 @@ if (abs(xspd) > abs(yspd))
             xspd *= -1;
             xDecceleration *= -1;
         }
-        else 
+        else if (enemyState == EnemyState.Shoved)
 		{
 			xspd = 0;
 			xDecceleration=0;
+		}
+		else {
+			xspd *= -1;
 		}
     }
 
@@ -269,7 +289,11 @@ if (abs(xspd) > abs(yspd))
             yspd *= -1;
             yDecceleration *= -1;
         }
-        else yspd = 0;
+        else if (enemyState == EnemyState.Shoved) {
+			yspd = 0; }
+			else {
+			yspd *= -1;	
+			}
     }
 } 
 else 
@@ -287,7 +311,11 @@ else
             yspd *= -1;
             yDecceleration *= -1;
         }
-        else yspd *= -1;
+        else if (enemyState == EnemyState.Shoved) {
+			yspd = 0; }
+			else {
+			yspd *= -1;	
+			}
     }
 
     // Then handle X collision
@@ -303,7 +331,14 @@ else
             xspd *= -1;
             xDecceleration *= -1;
         }
-        else xspd *= -1;
+        else if (enemyState == EnemyState.Shoved)
+		{
+			xspd = 0;
+			xDecceleration=0;
+		}
+		else {
+			xspd *= -1;
+		}
     }
 }
 
