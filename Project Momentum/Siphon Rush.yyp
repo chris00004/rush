@@ -66,6 +66,7 @@
     {"id":{"name":"objControllerNPCDiaglogue","path":"objects/objControllerNPCDiaglogue/objControllerNPCDiaglogue.yy",},},
     {"id":{"name":"objControllerRoom","path":"objects/objControllerRoom/objControllerRoom.yy",},},
     {"id":{"name":"objControllerTitleScreen","path":"objects/objControllerTitleScreen/objControllerTitleScreen.yy",},},
+    {"id":{"name":"objControllerTutorial","path":"objects/objControllerTutorial/objControllerTutorial.yy",},},
     {"id":{"name":"objCrane","path":"objects/objCrane/objCrane.yy",},},
     {"id":{"name":"objDashPanel","path":"objects/objDashPanel/objDashPanel.yy",},},
     {"id":{"name":"objDashRampHorizontal","path":"objects/objDashRampHorizontal/objDashRampHorizontal.yy",},},

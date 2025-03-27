@@ -43,6 +43,7 @@
     {"name":"objControllerNPCDiaglogue","order":4,"path":"objects/objControllerNPCDiaglogue/objControllerNPCDiaglogue.yy",},
     {"name":"objControllerRoom","order":1,"path":"objects/objControllerRoom/objControllerRoom.yy",},
     {"name":"objControllerTitleScreen","order":2,"path":"objects/objControllerTitleScreen/objControllerTitleScreen.yy",},
+    {"name":"objControllerTutorial","order":16,"path":"objects/objControllerTutorial/objControllerTutorial.yy",},
     {"name":"objCrane","order":9,"path":"objects/objCrane/objCrane.yy",},
     {"name":"objDashPanel","order":1,"path":"objects/objDashPanel/objDashPanel.yy",},
     {"name":"objDashRampHorizontalFloating","order":5,"path":"objects/objDashRampHorizontalFloating/objDashRampHorizontalFloating.yy",},
