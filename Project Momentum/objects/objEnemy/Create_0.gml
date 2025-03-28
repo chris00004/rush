@@ -26,6 +26,7 @@ zFloor=16;
 attackable=true;
 enemyState=0;
 kickedMovementApplied=false;
+reboundable = true;
 wallToLeft=false;
 wallToRight=false;
 wallToSide=false;

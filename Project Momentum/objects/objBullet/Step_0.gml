@@ -14,7 +14,7 @@ if (z>zFloor-24)
 	//instance_destroy(self);
 }
 
-if (place_meeting(x, y, objPlayer) && (z >= objPlayer.z && z <= objPlayer.z + 10)){
+if (place_meeting(x, y, objPlayer) && (z >= objPlayer.z - 1 && z <= objPlayer.z + 1)){
 objPlayer.playerState = PlayerState.hitByEnemy;
 objPlayer.hp -= 1;
 objPlayer.zspd = -2;

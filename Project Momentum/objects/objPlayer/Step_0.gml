@@ -127,11 +127,13 @@ if (playerState == PlayerState.Sliding)
 
 //-----[ Hit by enemy STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.hitByEnemy) {
-
+grav=gravNormal;
 alarmInvuln--;
+movementLock = true;
 
 if (alarmInvuln <= 0) {
 playerState = PlayerState.Normal;
+movementLock = false;
 alarmInvuln = 100;
 }
 }
