@@ -26,10 +26,6 @@ if (playerState != PlayerState.Dead)
 				draw_sprite_ext(sprXRailGrind, animFrameRun, x, y+z,1,1,0,c_white,1);
 			}
 		}
-		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
-		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
-		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
-		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
 		else if (playerState == PlayerState.hitByEnemy) {
 		if (alarmInvuln >= 0) {
 		if (alarmInvuln % 10 = 0) {
@@ -37,6 +33,12 @@ if (playerState != PlayerState.Dead)
 		}
 		}
 		}
+		
+		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);
+		else if (inputLeft && z==zFloor) draw_sprite(sprXRunLeft, animFrameRun, x, y+z);
+		else if (inputDown && z==zFloor) draw_sprite(sprXRunDown_1, animFrameRun, x, y+z);
+		else if (inputUp && z==zFloor) draw_sprite(sprXRunUp, animFrameRun, x, y+z);
+		
 		else if (playerState == PlayerState.BasicAttack 
 		|| playerState == PlayerState.AttackFinish)
 		{
@@ -112,13 +114,14 @@ if (playerState != PlayerState.Dead)
 		else draw_sprite(sprBoostMeterRecovery,round(20-(boostMeter/13)),x-12,y-12+z);*/
 
 }
+
 else if (playerState == PlayerState.Dead)
 {
 	draw_sprite(sprPlayerDeathIcon, 0, x, y+zFloor+13);
 }
 
 //HITBOX
-//draw_sprite(sprPlayerHitBox,0,x,y);
+draw_sprite(sprPlayerHitBox,0,x,y);
 
 /*
 draw_text(x+24,y-30,$"X_SPD: {xspd}");

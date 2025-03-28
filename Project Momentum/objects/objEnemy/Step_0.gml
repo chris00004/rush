@@ -136,9 +136,32 @@ switch(enemyState)
 		xDecceleration = xspd/75;
 		yDecceleration = yspd/75;
 		kickedMovementApplied=true;
+		
 	}
 	else
 	{
+		//rebound off enemies
+		for (var i = 0; i < instance_number(objEnemy); i++) {
+		var currentEnemy = instance_find(objEnemy, i); 
+		if (place_meeting(x, y, currentEnemy) && currentEnemy.reboundable) {
+			if (currentEnemy.isArmored) {
+			currentEnemy.armorHealth -= objPlayer.damage;
+			reboundable = false;
+			
+			}
+			else {
+				currentEnemy.hp -= objPlayer.damage;
+				reboundable = false;
+				currentEnemy.xspd = self.xspd * 0.5;
+				currentEnemy.yspd = self.yspd * 0.5;
+				self.xspd*= -0.5;
+				self.yspd*=-0.5;
+				currentEnemy.xDecceleration = currentEnemy.xspd/150;
+				currentEnemy.yDecceleration = currentEnemy.yspd/150;
+				}
+			}
+		}
+		
 		//apply decceleration
 		xspd-=xDecceleration;
 		yspd-=yDecceleration;
@@ -152,6 +175,11 @@ switch(enemyState)
 		{
 			enemyState = EnemyState.Normal;
 			kickedMovementApplied=false;
+			
+			for (var i = 0; i < instance_number(objEnemy); i++) {
+			var currentEnemy = instance_find(objEnemy, i);
+			currentEnemy.reboundable = true;
+			}
 		}
 	}
 	break;
