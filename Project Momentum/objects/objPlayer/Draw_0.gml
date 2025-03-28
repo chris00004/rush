@@ -4,6 +4,7 @@ if (playerState != PlayerState.Dead)
 	{
 		draw_sprite(sprPlayerShadow, 0, x, y+zFloor+13);
 	}
+		//sliding
 		if (playerState == PlayerState.Sliding) 
 		{
 			if (animDirection>90 && animDirection<270)
@@ -12,6 +13,17 @@ if (playerState != PlayerState.Dead)
 			}
 			else{
 				draw_sprite_ext(sprXSlideHorizontal, animFrameRun, x, y+z,1,1,0,c_white,1);
+			}
+		}
+		//rail grind
+		else if (playerState == PlayerState.ActionRailGrind) 
+		{
+			if (animDirection>90 && animDirection<270)
+			{
+				draw_sprite_ext(sprXRailGrind, animFrameRun, x, y+z,-1,1,0,c_white,1);
+			}
+			else{
+				draw_sprite_ext(sprXRailGrind, animFrameRun, x, y+z,1,1,0,c_white,1);
 			}
 		}
 		else if (inputRight && z==zFloor) draw_sprite(sprXRunRight, animFrameRun, x, y+z);

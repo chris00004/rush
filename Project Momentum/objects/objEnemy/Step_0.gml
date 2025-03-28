@@ -49,13 +49,13 @@ if (z>zFloor-24)
 }
 
 //check if walls are in the way
-if (place_meeting(x+xspd+1,y,objWall) || place_meeting(x+xspd-1,y,objWall)) wallToSide=true;
+if (place_meeting(x+xspd+24,y,objWall) || place_meeting(x+xspd-24,y,objWall)) wallToSide=true;
 else wallToSide=false;
 
-if (place_meeting(x+xspd+1,y,objWall)) wallToRight=true;
+if (place_meeting(x+xspd+24,y,objWall)) wallToRight=true;
 else wallToRight=false;
 
-if (place_meeting(x+xspd-1,y,objWall)) wallToLeft=true;
+if (place_meeting(x+xspd-24,y,objWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching

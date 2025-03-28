@@ -4,7 +4,7 @@
   "bboxMode":0,
   "bbox_bottom":37,
   "bbox_left":4,
-  "bbox_right":44,
+  "bbox_right":43,
   "bbox_top":11,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a8760cb7-b092-4c74-83ac-25bd3b783742","name":"a8760cb7-b092-4c74-83ac-25bd3b783742","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"a765457d-9231-4623-a1b0-0006055ab759","name":"a765457d-9231-4623-a1b0-0006055ab759","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -69,14 +69,14 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a8760cb7-b092-4c74-83ac-25bd3b783742","path":"sprites/sprXSlideHorizontal/sprXSlideHorizontal.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"51b9f1a5-aa1f-4df9-b37a-6959df4d9363","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a765457d-9231-4623-a1b0-0006055ab759","path":"sprites/sprXSlideHorizontal/sprXSlideHorizontal.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"a3e0b861-5bb8-4478-8a05-5869bcf2e45d","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
     "xorigin":26,
-    "yorigin":17,
+    "yorigin":21,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

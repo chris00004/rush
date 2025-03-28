@@ -3,6 +3,8 @@ x+=xspd;
 y+=yspd;
 zspd+=grav;
 
+if (zspd>12) zspd=12;
+
 if (z>zfloor)
 {
 	zspd=0;
@@ -105,6 +107,10 @@ switch (currentSprite)
 	
 	case sprIntroPlayerPunched:
 		if (frame>10) frame=10;
+	break;
+	
+	case sprIntroPlayerFalling:
+		if (frame>5) frame=5;
 	break;
 	
 }

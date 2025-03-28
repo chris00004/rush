@@ -1,4 +1,4 @@
-draw_sprite(sprPlayerShadow,0,x,y+12);
+draw_sprite(sprPlayerShadow,0,x,y+12+zfloor);
 
 switch(objIntroCutsceneController.animStatePlayer)
 {	
@@ -41,3 +41,5 @@ switch(objIntroCutsceneController.animStatePlayer)
 	draw_sprite_ext(sprIntroMotherboard,0,x-18,y-2+z,1,1,30,c_white,1);
 	break;
 }
+
+//draw_text(x,y-40,objIntroCutsceneController.alarmAnimPlayer);

@@ -1,3 +1,5 @@
+audio_play_sound(sndTrailerMusic,0,false);
+
 ///ENUM PlayerState
 enum PlayerState
 {

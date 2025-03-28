@@ -1,0 +1,1 @@
+shardSize=1;

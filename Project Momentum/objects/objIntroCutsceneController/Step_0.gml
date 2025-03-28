@@ -177,6 +177,48 @@ switch(animStatePlayer)
 		if (frameRate>60) frameRate=60;
 		objPlayerCutscene.xspd-=4;
 		if (objPlayerCutscene.xspd<-12) objPlayerCutscene.xspd=-12;
+		
+		if (objPlayerCutscene.x<objIntroCutsceneController.x-160)
+		{
+			animStatePlayer++;
+			instance_destroy(objIntroTextPanel);
+			objPlayerCutscene.x+=600;
+			layer_set_visible(layer_get_id("screenShakeBase"),false);
+			//objPlayerCutscene.y+=24;
+			objPlayerCutscene.xspd=-8;
+			objPlayerCutscene.zfloor=50000;
+		}
+	break;
+	
+	case 14:
+	
+		if (alarmAnimPlayer<-103) layer_set_visible(layer_get_id("screenShakeEffectLight"),true);
+		if (alarmAnimPlayer<-113) layer_set_visible(layer_get_id("screenShakeEffectLight"),false);
+	
+	if (objPlayerCutscene.x<objIntroCutsceneController.x)
+	{
+		objPlayerCutscene.xspd+=0.11;
+	}
+		if (objPlayerCutscene.xspd+0.11>0) objPlayerCutscene.xspd=0;
+		//start falling
+		if (objPlayerCutscene.xspd>-2.5)
+		{
+			objPlayerCutscene.currentSprite = sprIntroPlayerFalling;
+			objPlayerCutscene.grav=0.05;
+			objPlayerCutscene.frame=0;
+			layer_set_visible(layer_get_id("screenShakeBase"),true);
+			animStatePlayer++;
+			
+		}
+	break;
+	
+	case 15:
+		objPlayerCutscene.currentSprite = sprIntroPlayerFalling;
+		if (objPlayerCutscene.x<objIntroCutsceneController.x)
+		{
+		objPlayerCutscene.xspd+=0.11;
+		}
+		if (objPlayerCutscene.xspd+0.11>0) objPlayerCutscene.xspd=0;
 	break;
 }
 
