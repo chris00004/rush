@@ -12,5 +12,19 @@ draw_text(x+1210, y-38, "+")
 draw_text(x+1302, y-50, "+")
 draw_text(x+1400, y-70, "Jump");
 draw_text(x+1420, y-49, "/")
-draw_text(x+1520, y-70, "Slide");
+draw_text(x+1490, y-70, "Slide/Stomp(In Air)");
 draw_text(x+1527, y-49, "/")
+draw_text(x+825, y+470, 
+"(On Grind Rail)Press ___/___ to do tricks and increase your speed");
+draw_text(x+725, y+570, 
+"(On Grapple)Jumpimg allows you to leave the grapple before hitting the enemy");
+
+
+
+
+
+
+
+
+
+
