@@ -36,7 +36,7 @@ if (momentumLoss)
 	//if spd greater than base spd, decrease to base spd
 	if (maxSpeedNormal!=2.5)
 	{
-		maxSpeedNormal -= 0.075;
+		maxSpeedNormal -= 0.05;
 		if (maxSpeedNormal-0.05 <= 2.5) 
 		{
 			maxSpeedNormal = 2.5;
@@ -88,6 +88,7 @@ if (playerState == PlayerState.Normal)
 		{
 			playerState = PlayerState.Sliding;
 			alarmSliding = 45/(currentSpeed/(4*currentSpeed/3));
+			if (movementDirection)
 			movementLock=true;
 		}	
 	}
@@ -107,6 +108,7 @@ if (playerState == PlayerState.Normal)
 //-------[ SLIDING STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Sliding)
 {
+	
 	momentumLoss=false;
 	alarmMomentumLoss = 1;
 	alarmSliding--;

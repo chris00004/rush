@@ -271,9 +271,9 @@ if (abs(xspd) > abs(yspd))
     }
 
     // Then handle Y collision
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd+6, objWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objWall))
         {
             y += sign(yspd);
         }
@@ -293,9 +293,9 @@ if (abs(xspd) > abs(yspd))
 else 
 {
     // Handle Y collision first
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd+6, objWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objWall))
         {
             y += sign(yspd);
         }

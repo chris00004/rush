@@ -1,0 +1,1 @@
+draw_sprite_ext(sprTRSlideUnderY,0,x,y+z,1,1,0,c_white,1);
