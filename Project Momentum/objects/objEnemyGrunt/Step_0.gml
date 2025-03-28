@@ -256,10 +256,17 @@ switch(enemyState)
 	
 	//SLIDE LAUNCHING STATE
 	case EnemyState.SlideLaunched:
-		speed = 0;
+		
+		//apply decceleration
+		if (grounded)
+		{
+		xspd-=xDecceleration;
+		yspd-=yDecceleration;
+		}
 		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
+		if (abs(xspd) < abs(xDecceleration)+0.2) xspd = 0;
+		if (abs(yspd) < abs(yDecceleration)+0.2) yspd = 0;
+
 	
 		//reset back to normal state
 		if (xspd==0 && yspd==0) 

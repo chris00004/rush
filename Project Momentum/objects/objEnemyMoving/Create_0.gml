@@ -1,0 +1,33 @@
+
+
+event_inherited();
+hpInitial = 5;
+hp = 20;
+weak = false;
+isEnemy=true;
+xspd=0;
+yspd=0;
+zspd=0;
+newSpeed=0;
+movementDirection=0;
+xDecceleration = 0;
+yDecceleration = 0;
+grav = 0.12;
+zFloor=16;
+attackable=true;
+enemyState=0;
+kickedMovementApplied=false;
+reboundable = true;
+wallToLeft=false;
+wallToRight=false;
+wallToSide=false;
+grounded=false;
+beenHit=false;
+hitStun = 0;
+isArmored = false;
+chuckedAtX = 0;
+chuckedAtY = 0;
+chuckedAtZ = 0;
+alarmChangeDirection = 0;
+isActive = false;
+alarmChooseAction = 0;

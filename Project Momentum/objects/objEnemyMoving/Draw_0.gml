@@ -29,5 +29,5 @@ if (objPlayer.closestTarget == self
 }
 
 draw_text(x+24,y,enemyState);
-draw_text(x+24,y+12,xDecceleration);
+draw_text(x+24,y+12,xspd);
 }

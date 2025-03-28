@@ -59,7 +59,9 @@ if (place_meeting(x+xspd-24,y,objWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching
-if (grounded && place_meeting(x,y,objPlayer) && objPlayer.playerState == PlayerState.Sliding)
+if (grounded && place_meeting(x,y,objPlayerSlideRadius) 
+&& objPlayer.playerState == PlayerState.Sliding
+&& enemyState != EnemyState.SlideLaunched)
 {
 	enemyState = EnemyState.SlideLaunched;
 	xspd=objPlayer.xspd*1.15;
@@ -74,56 +76,11 @@ switch(enemyState)
 {
 	case EnemyState.Normal:
 	
-	if (isActive && 
-	!(
-	(objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.HomeIn || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self)) {
-		if (alarmChangeDirection <= 0) {
-			randomize();
-			var randomVar = random_range(0, 100);
-			if (randomVar >= 0 && randomVar < 25) {
-				xspd = 2;
-				yspd = 0;
-			}
-			else if (randomVar >= 25 && randomVar < 50) {
-				xspd = 0;
-				yspd = 2;
-			}
-			else if (randomVar >= 50 && randomVar < 75) {
-				xspd = 0;
-				yspd = -2;
-			}
-			else {
-				xspd = -2;
-				yspd = 0;
-			}
-			
-			
-			alarmChangeDirection = random(100);
-		}
-		
-		alarmChangeDirection--;
-		
-		if (alarmChooseAction <= 0) {
-			
-		}
-		
-		alarmChooseAction--;
-		
-		
-		if (distance_to_object(objPlayer) > 1000) {
-		isActive = false;	
-		}
-	}
-	else {
-		xspd = 0;
-		yspd = 0;
-		if (distance_to_object(objPlayer) < 1000) {
-		isActive = true;	
-		}	
-	}
-	
-	
-	
+	xDecceleration=0;
+	yDecceleration=0;
+	xspd=0;
+	yspd=0;
+
 	break;
 	
 	//SLAM STRIKE STATE
@@ -141,23 +98,28 @@ switch(enemyState)
 	else
 	{
 		//rebound off enemies
-		for (var i = 0; i < instance_number(objEnemy); i++) {
-		var currentEnemy = instance_find(objEnemy, i); 
-		if (place_meeting(x, y, currentEnemy) && currentEnemy.reboundable) {
-			if (currentEnemy.isArmored) {
-			currentEnemy.armorHealth -= objPlayer.damage;
-			reboundable = false;
-			
-			}
-			else {
-				currentEnemy.hp -= objPlayer.damage;
-				reboundable = false;
-				currentEnemy.xspd = self.xspd * 0.5;
-				currentEnemy.yspd = self.yspd * 0.5;
-				self.xspd*= -0.5;
-				self.yspd*=-0.5;
-				currentEnemy.xDecceleration = currentEnemy.xspd/150;
-				currentEnemy.yDecceleration = currentEnemy.yspd/150;
+		for (var i = 0; i < instance_number(objEnemy); i++) 
+		{
+			var currentEnemy = instance_find(objEnemy, i); 
+			if (place_meeting(x, y, currentEnemy) && currentEnemy.reboundable) 
+			{
+				if (currentEnemy.isArmored) 
+				{
+					currentEnemy.armorHealth -= objPlayer.damage;
+					reboundable = false;
+				}
+				else 
+				{
+					currentEnemy.hp -= objPlayer.damage;
+					reboundable = false;
+					currentEnemy.xspd = self.xspd * 0.5;
+					currentEnemy.yspd = self.yspd * 0.5;
+					self.xspd*= -0.5;
+					self.yspd*=-0.5;
+					self.xDecceleration*= -1;
+					self.yDecceleration*= -1;
+					currentEnemy.xDecceleration = currentEnemy.xspd/150;
+					currentEnemy.yDecceleration = currentEnemy.yspd/150;
 				}
 			}
 		}
@@ -165,10 +127,9 @@ switch(enemyState)
 		//apply decceleration
 		xspd-=xDecceleration;
 		yspd-=yDecceleration;
-		
 		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1+xDecceleration) xspd = 0;
-		if (abs(yspd) < 0.1+yDecceleration) yspd = 0;
+		if (abs(xspd) < abs(xDecceleration)+0.2) xspd = 0;
+		if (abs(yspd) < abs(yDecceleration)+0.2) yspd = 0;
 	
 		//reset back to normal state
 		if (xspd==0 && yspd==0) 
@@ -257,9 +218,16 @@ switch(enemyState)
 	//SLIDE LAUNCHING STATE
 	case EnemyState.SlideLaunched:
 		
+		//apply decceleration
+		if (grounded)
+		{
+		xspd-=xDecceleration;
+		yspd-=yDecceleration;
+		}
 		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1) xspd = 0;
-		if (abs(yspd) < 0.1) yspd = 0;
+		if (abs(xspd) < abs(xDecceleration)+0.2) xspd = 0;
+		if (abs(yspd) < abs(yDecceleration)+0.2) yspd = 0;
+
 	
 		//reset back to normal state
 		if (xspd==0 && yspd==0) 
@@ -288,13 +256,10 @@ if (abs(xspd) > abs(yspd))
             xspd *= -1;
             xDecceleration *= -1;
         }
-        else if (enemyState == EnemyState.Shoved)
+		else 
 		{
 			xspd = 0;
 			xDecceleration=0;
-		}
-		else {
-			xspd *= -1;
 		}
     }
 
@@ -311,10 +276,10 @@ if (abs(xspd) > abs(yspd))
             yspd *= -1;
             yDecceleration *= -1;
         }
-        else if (enemyState == EnemyState.Shoved) {
-			yspd = 0; }
-			else {
-			yspd *= -1;	
+			else 			
+			{
+				yspd =0;
+				yDecceleration=0;
 			}
     }
 } 
@@ -333,10 +298,10 @@ else
             yspd *= -1;
             yDecceleration *= -1;
         }
-        else if (enemyState == EnemyState.Shoved) {
-			yspd = 0; }
-			else {
-			yspd *= -1;	
+			else 
+			{
+			yspd =0;
+			yDecceleration=0;
 			}
     }
 
@@ -353,13 +318,9 @@ else
             xspd *= -1;
             xDecceleration *= -1;
         }
-        else if (enemyState == EnemyState.Shoved)
-		{
+		else {
 			xspd = 0;
 			xDecceleration=0;
-		}
-		else {
-			xspd *= -1;
 		}
     }
 }

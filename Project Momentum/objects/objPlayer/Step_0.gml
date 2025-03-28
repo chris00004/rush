@@ -108,6 +108,7 @@ if (playerState == PlayerState.Normal)
 //-------[ SLIDING STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Sliding)
 {
+	scrTargetObject();
 	
 	momentumLoss=false;
 	alarmMomentumLoss = 1;
@@ -275,11 +276,14 @@ if (playerState == PlayerState.AttachToTarget)
 	if (closestTarget.isEnemy)
 	{
 		//switch to enemy bounce state
-		if (closestTarget.weak && alarmAttachToTarget<26)
+		if (closestTarget.weak)
 		{
 			playerState = PlayerState.EnemyBounce;
+			maxSpeedNormal-=2;
 			closestTarget.hp = 0;
-			zspd = -5;
+			xspd=0;
+			yspd=0;
+			zspd = -6.5;
 			//grav = gravNormal;
 		}
 
@@ -781,8 +785,6 @@ if (playerState == PlayerState.EnemyBounce)
 {
 	inputLock = false;
 	movementLock = false;
-	acceleration = 0.2;
-	maxSpeedNormal = 2;
 	grav = gravNormal;
 
 	//allow lock on to target
