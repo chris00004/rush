@@ -36,5 +36,5 @@
     "path":"sprites/sprSlideRadius/sprSlideRadius.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

@@ -82,14 +82,49 @@ if (playerState == PlayerState.Normal)
 	}
 
 	//set state to sliding
-	if (grounded && currentSpeed>=2.5)
+	if (grounded && currentSpeed>=0.1 && playerState!=PlayerState.Sliding)
 	{
 		if (inputStomp)
 		{
+			if (movementDirection>22.5 && movementDirection<=67.5)
+		{
+			movementDirection=45;
+		}
+		else if (movementDirection<=112.5 && movementDirection>67.5)
+		{
+			movementDirection=90;
+		}
+		else if (movementDirection<=157.5 && movementDirection>112.5)
+		{
+			movementDirection=135;
+		}
+		else if (movementDirection<=202.5 && movementDirection>157.5)
+		{
+			movementDirection=180;
+		}
+		else if (movementDirection<=247.5 && movementDirection>202.5)
+		{
+			movementDirection=225;
+		}
+		else if (movementDirection<=292.5 && movementDirection>247.5)
+		{
+			movementDirection=270;
+		}
+		else if (movementDirection<=337.5 && movementDirection>292.5)
+		{
+			movementDirection=315;
+		}
+		else
+		{
+			movementDirection=0;
+		}
+		
 			playerState = PlayerState.Sliding;
 			alarmSliding = 45/(currentSpeed/(4*currentSpeed/3));
 			if (movementDirection)
 			movementLock=true;
+			
+			
 		}	
 	}
 	
@@ -109,6 +144,28 @@ if (playerState == PlayerState.Normal)
 if (playerState == PlayerState.Sliding)
 {
 	scrTargetObject();
+	movementLock=true;
+	
+	//cos and sin of acceleration
+		angleAccelerationX = maxSpeedNormal*2 * cos(movementDirection*(pi/180));
+		angleAccelerationY = -(maxSpeedNormal*2 * sin(movementDirection*(pi/180)));
+		
+		//apply acceleration to player speed
+		xspd+=angleAccelerationX;
+		yspd+=angleAccelerationY;
+	
+		// Calculate current speed
+		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));
+
+		//CAP SPEED
+		if (currentSpeed > maxSpeedNormal) 
+		{
+			//scale the speed 
+			speedScale = maxSpeedNormal / currentSpeed;
+
+			xspd *= speedScale;
+			yspd *= speedScale;
+		}
 	
 	momentumLoss=false;
 	alarmMomentumLoss = 1;
@@ -949,7 +1006,7 @@ if (gamepad_axis_value(0, gp_axislh)>deadZone || gamepad_axis_value(0, gp_axislh
 
 
 //KEYBOARD DIRECTIONAL INPUT
-	if (!gamepadActive)
+	if (!gamepadActive && objPlayer.playerState!=PlayerState.Sliding)
 	{
 		if (inputRight) movementDirection = 0;
 		if (inputLeft) movementDirection = 180;
@@ -962,7 +1019,7 @@ if (gamepad_axis_value(0, gp_axislh)>deadZone || gamepad_axis_value(0, gp_axislh
 	}
 	
 	//GAMEPAD DIRECTIONAL INPUT
-	else if (gamepadActive)
+	else if (gamepadActive && objPlayer.playerState!=PlayerState.Sliding)
 	{
 		joystickAngle  = point_direction(0,0,gamepad_axis_value(0,gp_axislh),gamepad_axis_value(0,gp_axislv))
 		movementDirection = joystickAngle;

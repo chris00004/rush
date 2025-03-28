@@ -68,7 +68,7 @@ if (grounded && place_meeting(x,y,objPlayerSlideRadius)
 	yspd=objPlayer.yspd*1.15;
 	xDecceleration = xspd/25;
 	yDecceleration = yspd/25;
-	zspd=-objPlayer.currentSpeed/2.75;
+	zspd=-objPlayer.currentSpeed/6;
 }
 
 //STATES

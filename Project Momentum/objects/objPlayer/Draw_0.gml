@@ -121,7 +121,7 @@ else if (playerState == PlayerState.Dead)
 }
 
 //HITBOX
-draw_sprite(sprPlayerHitBox,0,x,y);
+//draw_sprite(sprPlayerHitBox,0,x,y);
 
 /*
 draw_text(x+24,y-30,$"X_SPD: {xspd}");
