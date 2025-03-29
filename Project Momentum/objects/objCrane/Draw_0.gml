@@ -5,7 +5,7 @@ draw_rectangle(x-12,y-12,x+11,y+11,false);
 
 //blockBG
 draw_set_alpha(1);
-draw_set_color(c_red);
+draw_set_color(c_dkgray);
 draw_rectangle(iX-12,y-12+z-52,iX+11,y+11+z-52,false);
 
 //crane side R

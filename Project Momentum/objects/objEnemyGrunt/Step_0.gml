@@ -113,7 +113,7 @@ switch(enemyState)
 		
 		alarmChangeDirection--;
 		
-		if (alarmChooseAction <= 0) {
+		if (alarmChooseAction <= 0 && active) {
 			var instanceBullet = instance_create_layer(self.x, self.y, "projectileLayer", objBullet);
 			
 			alarmChooseAction = 150;
@@ -167,6 +167,8 @@ switch(enemyState)
 				currentEnemy.yspd = self.yspd * 0.5;
 				self.xspd*= -0.5;
 				self.yspd*=-0.5;
+				self.xDecceleration*= -1;
+				self.yDecceleration*= -1;
 				currentEnemy.xDecceleration = currentEnemy.xspd/150;
 				currentEnemy.yDecceleration = currentEnemy.yspd/150;
 				}

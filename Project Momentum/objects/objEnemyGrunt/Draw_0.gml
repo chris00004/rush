@@ -57,6 +57,6 @@ if (objPlayer.closestTarget == self
 	draw_set_color(c_white);
 }
 
-draw_text(x+24,y,grav);
-draw_text(x+24,y+12,xspd);
+//draw_text(x+24,y,grav);
+//draw_text(x+24,y+12,xspd);
 }
