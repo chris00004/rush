@@ -62,6 +62,30 @@ if (playerState == PlayerState.GodMode)
 //-----[ NORMAL STATE ]-----------------------------------------------------------------------------------------------------------------------------
 if (playerState == PlayerState.Normal)
 {	
+	
+	//activate level
+	if (instance_exists(objLevelTransition))
+	{
+		if (place_meeting(x,y,objLevelTransition))
+		{
+			if (keyboard_check_pressed(vk_enter) ||
+			gamepad_button_check_pressed(0,gp_start))
+			{
+				objLevelTransition.active=true;
+			}
+		}
+	}
+	
+	//go back to tutorial from rig
+	if (room==rmTropicalRig)
+	{
+		if (keyboard_check_pressed(vk_enter) ||
+			gamepad_button_check_pressed(0,gp_start))
+			{
+				room_goto(rmTutorialStage);
+			}
+	}
+	
 	grav = gravNormal;
 	//animYPosActual = false;
 	

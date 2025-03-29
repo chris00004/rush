@@ -23,9 +23,6 @@ switch(camMode)
 {
 	case CameraMode.FollowPlayer:
 	
-	if (room==rmTropicalRig) 
-	
-	
 	if (instance_exists(following))
 	{
 		
