@@ -20,8 +20,8 @@ draw_text(x+825, y+470,
 draw_text(x+725, y+570, 
 "(On Grapple)Jumpimg allows you to leave the grapple before hitting the enemy");
 
-draw_set_color(c_red);
-draw_text(x+1100, y+230, "Press Enter to go into the stage");
+draw_set_color(c_blue);
+draw_text(x+720, y+40, "Press Enter to go into the stage");
 
 
 
