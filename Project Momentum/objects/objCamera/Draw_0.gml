@@ -57,6 +57,8 @@ draw_set_color(c_white)
 draw_text(camX+16,camY+1,string(minutes)+":"+string(seconds));
 }
 
+draw_text(camX+180,camY+1,"Press [R] To Reset Game || Press [Enter] To Return To Tutorial");
+
 if (room==rmTutorialStage)
 {
 	/*

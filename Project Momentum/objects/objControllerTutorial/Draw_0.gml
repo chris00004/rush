@@ -2,7 +2,7 @@ draw_set_color(c_white);
 draw_text(x+535, y-70, "Move");
 draw_text(x+655, y-60, "Grapple/Normal Punch");
 draw_text(x+695, y-38, "/");
-draw_text(x+800, y-60, "Juggle");
+draw_text(x+800, y-60, "Juggle(Locked-On)");
 draw_text(x+815, y-38, "/");
 draw_text(x+955, y-90, "Combo Extender");
 draw_text(x+960, y-38, "+");
@@ -21,9 +21,9 @@ draw_text(x+725, y+570,
 "(On Grapple)Jumpimg allows you to leave the grapple before hitting the enemy");
 
 draw_set_color(c_blue);
-draw_text(x+720, y+40, "Press Enter to go into the stage");
-
-
+draw_text(x+720, y+40, "Press Enter/Start to go into the stage");
+draw_text(x+620, y+110, "Every six hits a charge is built and charges \ncan be spent in various abilities in combat \nby using     /    ,     /     or     /     \nwith or withoout directionals");
+draw_text(x+1250, y+70, "Slide Under This, sliding maintains your speed");
 
 
 
