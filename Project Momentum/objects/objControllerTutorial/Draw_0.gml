@@ -7,6 +7,7 @@ draw_text(x+815, y-38, "/");
 draw_text(x+955, y-90, "Combo Extender");
 draw_text(x+960, y-38, "+");
 draw_text(x+1050, y-48, "+");
+
 draw_text(x+1200, y-90, "Multidirectional Kick");
 draw_text(x+1210, y-38, "+")
 draw_text(x+1302, y-50, "+")
@@ -19,6 +20,8 @@ draw_text(x+825, y+470,
 draw_text(x+725, y+570, 
 "(On Grapple)Jumpimg allows you to leave the grapple before hitting the enemy");
 
+draw_set_color(c_red);
+draw_text(x+1100, y+230, "Press Enter to go into the stage");
 
 
 
