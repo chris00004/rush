@@ -1,6 +1,13 @@
 
 if (active)
 {
+	
+	frameAlarm--;
+	if (frameAlarm < 0) {
+	frame++;
+	frameAlarm = 4;
+	}
+	
 //add to enemy array
 if (!added)
 {
@@ -50,13 +57,13 @@ if (z>zFloor-24)
 }
 
 //check if walls are in the way
-if (place_meeting(x+xspd+1,y,objWall) || place_meeting(x+xspd-1,y,objWall)) wallToSide=true;
+if (place_meeting(x+xspd+1,y,objEnemyWall) || place_meeting(x+xspd-1,y,objEnemyWall)) wallToSide=true;
 else wallToSide=false;
 
-if (place_meeting(x+xspd+1,y,objWall)) wallToRight=true;
+if (place_meeting(x+xspd+1,y,objEnemyWall)) wallToRight=true;
 else wallToRight=false;
 
-if (place_meeting(x+xspd-1,y,objWall)) wallToLeft=true;
+if (place_meeting(x+xspd-1,y,objEnemyWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching
@@ -107,7 +114,7 @@ switch(enemyState)
 		alarmChangeDirection--;
 		
 		if (alarmChooseAction <= 0) {
-			var instanceBullet = instance_create_layer(self.x, self.y, "InstanceLayer", objBullet);
+			var instanceBullet = instance_create_layer(self.x, self.y, "projectileLayer", objBullet);
 			
 			alarmChooseAction = 150;
 		}
@@ -153,7 +160,7 @@ switch(enemyState)
 			reboundable = false;
 			
 			}
-			else {
+			else if (grounded) {
 				currentEnemy.hp -= objPlayer.damage;
 				reboundable = false;
 				currentEnemy.xspd = self.xspd * 0.5;
@@ -167,12 +174,14 @@ switch(enemyState)
 		}
 		
 		//apply decceleration
+		if (grounded)
+		{
 		xspd-=xDecceleration;
 		yspd-=yDecceleration;
-		
+		}
 		//stop moving if speed close to 0
-		if (abs(xspd) < 0.1+xDecceleration) xspd = 0;
-		if (abs(yspd) < 0.1+yDecceleration) yspd = 0;
+		if (abs(xspd) < abs(xDecceleration)+0.2) xspd = 0;
+		if (abs(yspd) < abs(yDecceleration)+0.2) yspd = 0;
 	
 		//reset back to normal state
 		if (xspd==0 && yspd==0) 
@@ -283,9 +292,9 @@ switch(enemyState)
 if (abs(xspd) > abs(yspd)) 
 {
     // Handle X collision first
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
@@ -306,9 +315,9 @@ if (abs(xspd) > abs(yspd))
     }
 
     // Then handle Y collision
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd), objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -328,9 +337,9 @@ if (abs(xspd) > abs(yspd))
 else 
 {
     // Handle Y collision first
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd), objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -348,9 +357,9 @@ else
     }
 
     // Then handle X collision
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
@@ -380,6 +389,7 @@ if (objPlayer.playerState = PlayerState.Dead)
 }
 
 
-
+if (xspd>0) xscale=1;
+if (xspd<0) xscale=-1;
 
 

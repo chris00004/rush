@@ -44,33 +44,73 @@ if (playerState != PlayerState.Dead)
 		{
 			switch(attackState)
 			{
-				case AttackState.Idle:
-				draw_sprite(sprXFallRight, 0, x, y+z);
-				break;
+				
 				
 				case AttackState.Punch: 
-				if (punchAnim==0) draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_yellow, 1);
-				else draw_sprite_ext(sprFlamePunch1R, 2, x, y+z, 1, 1, 0, c_blue, 1);
+				if (attachSide == 0) {
+					if (punchAnim==0) draw_sprite_ext(sprXLightPunchLeft, 2, x, y+z, 1, 1, 0, c_white, 1);
+				else draw_sprite_ext(sprXLightPunchRight, 2, x, y+z, 1, 1, 0, c_white, 1);
+				}
+				else {
+					if (punchAnim==0) draw_sprite_ext(sprXLightPunchLeft, 2, x, y+z, -1, 1, 0, c_white, 1);
+				else draw_sprite_ext(sprXLightPunchRight, 2, x, y+z, -1, 1, 0, c_white, 1);
+				}
+				
 				break;
 				
 				case AttackState.PunchFinisher: 
-				draw_sprite_ext(sprXHeavyPunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				if (attachSide == 0) {
+					draw_sprite_ext(sprXHeavyPunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				}
+				else {
+					draw_sprite_ext(sprXHeavyPunch, 0, x, y+z, -1, 1, 0, c_white, 1);
+				}
+				
 				break;
 				
 				case AttackState.SlamStrike: 
-				draw_sprite_ext(sprAnimAttackReverseKick, 0, x, y+z, 1, 1, 0, c_white, 1);
+				if (attachSide == 0) {
+					draw_sprite_ext(sprAnimAttackReverseKick, 0, x, y+z, 1, 1, 0, c_white, 1);
+				}
+				else {
+					draw_sprite_ext(sprAnimAttackReverseKick, 0, x, y+z, -1, 1, 0, c_white, 1);
+				}
+				
 				break;
 				
 				case AttackState.Launcher: 
-				draw_sprite_ext(sprAnimAttackLaunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				if (attachSide == 0) {
+					draw_sprite_ext(sprAnimAttackLaunch, 0, x, y+z, 1, 1, 0, c_white, 1);
+				}
+				else {
+					draw_sprite_ext(sprAnimAttackLaunch, 0, x, y+z, -1, 1, 0, c_white, 1);
+				}
+				
 				break;
 				
 				case AttackState.comboExtender: 
-				draw_sprite_ext(sprFlamePunch0R, 2, x, y+z, 1, 1, 0, c_green, 1);
+				if(attachSide == 0) {
+					draw_sprite_ext(sprXHeavyPunch, 2, x, y+z, 1, 1, 0, c_green, 1);
+				}
+				else {
+					draw_sprite_ext(sprXHeavyPunch, 2, x, y+z, -1, 1, 0, c_green, 1);
+				}
+				
 				break;
 			}
 		}
 		
+		else if (playerState==PlayerState.AttachToTarget) 
+		{
+			if (attachSide==1)
+			{
+				draw_sprite_ext(sprXFallRight, 0, x, y+z, -1, 1, 0, c_white, 1);
+			}
+			else
+			{
+				draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
+			}
+		}
 		//draws left or right air sprites depending on speed and what side they're attached to the enemy
 		else if (!grounded) 
 		{
@@ -83,6 +123,7 @@ if (playerState != PlayerState.Dead)
 				draw_sprite_ext(sprXFallRight, 0, x, y+z, 1, 1, 0, c_white, 1);
 			}
 		}
+	
 		
 		else 
 		{
@@ -138,11 +179,11 @@ draw_text(x+24,y+30,$"Y_ACC: {newSpeedY}");*/
 //draw_text(x+24,y-6,$"X_SPD: {xspd}");
 //draw_text(x+24,y+6,$"Y_SPD: {yspd}");
 
-draw_text(x+24,y-6,xspd);
-draw_text(x+24,y+6,playerState);
+//draw_text(x+24,y-6,xspd);
+//draw_text(x+24,y+6,playerState);
 
-draw_text(x+24,y+18,animDirection);
-draw_text(x+24,y-30, maxSpeedNormal);
+//draw_text(x+24,y+18,animDirection);
+//draw_text(x+24,y-30, maxSpeedNormal);
 
 switch(heavyCharges)
 {

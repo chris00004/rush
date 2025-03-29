@@ -1,8 +1,37 @@
 if (active)
 {
 draw_set_color(c_white);
-draw_sprite(sprEnemyTestShadow, 0, x, y+zFloor);
-draw_sprite_ext(sprEnemyTest, 0, x, y+z, 1, 1, 0, c_navy, 1);
+draw_sprite(sprPlayerShadow, 0, x, y+zFloor);
+/*
+if (xspd >= 0 && !(objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self) {
+	draw_sprite_ext(sprIntroGuardWalk, frame, x, y+z + 10, 1, 1, 0, c_white, 1);
+}
+
+else if (xspd < 0 && !(objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self) {
+	draw_sprite_ext(sprIntroGuardWalk, frame, x, y+z + 10, -1, 1, 0, c_white, 1);
+}
+else if ((objPlayer.playerState == PlayerState.AttachToTarget || objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self) {
+	if (objPlayer.attachSide = 0) {
+		draw_sprite_ext(sprIntroGuardHit, 1, x, y+z + 10, -1, 1, 0, c_white, 1);
+	}
+	else {
+		draw_sprite_ext(sprIntroGuardHit, 1, x, y+z + 10, 1, 1, 0, c_white, 1);
+	}
+	
+}*/
+
+if (xspd != 0 || yspd != 0) 
+{
+	
+	draw_sprite_ext(sprIntroGuardWalk, frame, x, y+z + 10, xscale, 1, 0, c_white, 1);
+}
+else if ((objPlayer.playerState == PlayerState.BasicAttack) && objPlayer.closestTarget == self)
+{
+	draw_sprite_ext(sprIntroGuardHit, frame, x, y+z + 10, xscale, 1, 0, c_white, 1);
+}
+else draw_sprite_ext(sprIntroGuardIdleSide, frame, x, y+z + 10, xscale, 1, 0, c_white, 1);
+
+
 
 if (objPlayer.closestTarget == self 
 && !collision_line(objPlayer.x,objPlayer.y,x,y,objWall,false,true) 

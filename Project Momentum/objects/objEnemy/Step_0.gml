@@ -49,13 +49,13 @@ if (z>zFloor-24)
 }
 
 //check if walls are in the way
-if (place_meeting(x+xspd+24,y,objWall) || place_meeting(x+xspd-24,y,objWall)) wallToSide=true;
+if (place_meeting(x+xspd+24,y,objEnemyWall) || place_meeting(x+xspd-24,y,objEnemyWall)) wallToSide=true;
 else wallToSide=false;
 
-if (place_meeting(x+xspd+24,y,objWall)) wallToRight=true;
+if (place_meeting(x+xspd+24,y,objEnemyWall)) wallToRight=true;
 else wallToRight=false;
 
-if (place_meeting(x+xspd-24,y,objWall)) wallToLeft=true;
+if (place_meeting(x+xspd-24,y,objEnemyWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching
@@ -68,7 +68,7 @@ if (grounded && place_meeting(x,y,objPlayerSlideRadius)
 	yspd=objPlayer.yspd*1.15;
 	xDecceleration = xspd/25;
 	yDecceleration = yspd/25;
-	zspd=-objPlayer.currentSpeed/6;
+	zspd=-objPlayer.currentSpeed/2.5;
 }
 
 //STATES
@@ -76,10 +76,12 @@ switch(enemyState)
 {
 	case EnemyState.Normal:
 	
-	xDecceleration=0;
-	yDecceleration=0;
-	xspd=0;
-	yspd=0;
+	//apply decceleration
+		xspd-=xDecceleration;
+		yspd-=yDecceleration;
+		//stop moving if speed close to 0
+		if (abs(xspd) < abs(xDecceleration)+0.2) xspd = 0;
+		if (abs(yspd) < abs(yDecceleration)+0.2) yspd = 0;
 
 	break;
 	
@@ -108,8 +110,7 @@ switch(enemyState)
 					currentEnemy.armorHealth -= objPlayer.damage;
 					reboundable = false;
 				}
-				else 
-				{
+				else if (grounded) {
 					currentEnemy.hp -= objPlayer.damage;
 					reboundable = false;
 					currentEnemy.xspd = self.xspd * 0.5;
@@ -118,8 +119,8 @@ switch(enemyState)
 					self.yspd*=-0.5;
 					self.xDecceleration*= -1;
 					self.yDecceleration*= -1;
-					currentEnemy.xDecceleration = currentEnemy.xspd/150;
-					currentEnemy.yDecceleration = currentEnemy.yspd/150;
+					currentEnemy.xDecceleration = currentEnemy.xspd/80;
+					currentEnemy.yDecceleration = currentEnemy.yspd/80;
 				}
 			}
 		}
@@ -244,13 +245,14 @@ switch(enemyState)
 if (abs(xspd) > abs(yspd)) 
 {
     // Handle X collision first
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
         if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Normal
 		|| enemyState == EnemyState.Spiked)
         {
             xspd *= -1;
@@ -264,13 +266,14 @@ if (abs(xspd) > abs(yspd))
     }
 
     // Then handle Y collision
-    if (place_meeting(x, y + yspd+6, objWall))
+    if (place_meeting(x, y + yspd+6, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd)+6, objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objEnemyWall))
         {
             y += sign(yspd);
         }
         if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Normal
 		|| enemyState == EnemyState.Spiked)
         {
             yspd *= -1;
@@ -286,13 +289,14 @@ if (abs(xspd) > abs(yspd))
 else 
 {
     // Handle Y collision first
-    if (place_meeting(x, y + yspd+6, objWall))
+    if (place_meeting(x, y + yspd+6, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd)+6, objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objEnemyWall))
         {
             y += sign(yspd);
         }
         if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Normal
 		|| enemyState == EnemyState.Spiked)
         {
             yspd *= -1;
@@ -306,13 +310,14 @@ else
     }
 
     // Then handle X collision
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
         if (enemyState == EnemyState.SlamStrike
+		|| enemyState == EnemyState.Normal
 		|| enemyState == EnemyState.Spiked)
         {
             xspd *= -1;

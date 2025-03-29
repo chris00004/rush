@@ -49,13 +49,13 @@ if (z>zFloor-24)
 }
 
 //check if walls are in the way
-if (place_meeting(x+xspd+24,y,objWall) || place_meeting(x+xspd-24,y,objWall)) wallToSide=true;
+if (place_meeting(x+xspd+24,y,objEnemyWall) || place_meeting(x+xspd-24,y,objEnemyWall)) wallToSide=true;
 else wallToSide=false;
 
-if (place_meeting(x+xspd+24,y,objWall)) wallToRight=true;
+if (place_meeting(x+xspd+24,y,objEnemyWall)) wallToRight=true;
 else wallToRight=false;
 
-if (place_meeting(x+xspd-24,y,objWall)) wallToLeft=true;
+if (place_meeting(x+xspd-24,y,objEnemyWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching
@@ -292,9 +292,9 @@ switch(enemyState)
 if (abs(xspd) > abs(yspd)) 
 {
     // Handle X collision first
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
@@ -312,9 +312,9 @@ if (abs(xspd) > abs(yspd))
     }
 
     // Then handle Y collision
-    if (place_meeting(x, y + yspd+6, objWall))
+    if (place_meeting(x, y + yspd+6, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd)+6, objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -334,9 +334,9 @@ if (abs(xspd) > abs(yspd))
 else 
 {
     // Handle Y collision first
-    if (place_meeting(x, y + yspd+6, objWall))
+    if (place_meeting(x, y + yspd+6, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd)+6, objWall))
+        while (!place_meeting(x, y + sign(yspd)+6, objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -354,9 +354,9 @@ else
     }
 
     // Then handle X collision
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }

@@ -124,7 +124,26 @@ if (playerState == PlayerState.Normal)
 			if (movementDirection)
 			movementLock=true;
 			
-			
+			//cos and sin of acceleration
+		angleAccelerationX = maxSpeedNormal*2 * cos(movementDirection*(pi/180));
+		angleAccelerationY = -(maxSpeedNormal*2 * sin(movementDirection*(pi/180)));
+		
+		//apply acceleration to player speed
+		xspd+=angleAccelerationX;
+		yspd+=angleAccelerationY;
+	
+		// Calculate current speed
+		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));
+
+		//CAP SPEED
+		if (currentSpeed > maxSpeedNormal) 
+		{
+			//scale the speed 
+			speedScale = maxSpeedNormal / currentSpeed;
+
+			xspd *= speedScale;
+			yspd *= speedScale;
+		}
 		}	
 	}
 	
@@ -145,27 +164,6 @@ if (playerState == PlayerState.Sliding)
 {
 	scrTargetObject();
 	movementLock=true;
-	
-	//cos and sin of acceleration
-		angleAccelerationX = maxSpeedNormal*2 * cos(movementDirection*(pi/180));
-		angleAccelerationY = -(maxSpeedNormal*2 * sin(movementDirection*(pi/180)));
-		
-		//apply acceleration to player speed
-		xspd+=angleAccelerationX;
-		yspd+=angleAccelerationY;
-	
-		// Calculate current speed
-		currentSpeed = sqrt(sqr(xspd) + sqr(yspd));
-
-		//CAP SPEED
-		if (currentSpeed > maxSpeedNormal) 
-		{
-			//scale the speed 
-			speedScale = maxSpeedNormal / currentSpeed;
-
-			xspd *= speedScale;
-			yspd *= speedScale;
-		}
 	
 	momentumLoss=false;
 	alarmMomentumLoss = 1;
@@ -223,6 +221,7 @@ if (playerState == PlayerState.Dead)
 		inputLock=false;
 		movementLock = false;
 		playerState = PlayerState.Normal;
+		room_restart();
 	}
 }
 
@@ -914,6 +913,8 @@ if (playerState == PlayerState.ActionDashPanel)
 //ACTION DASH RAMP
 if (playerState == PlayerState.ActionDashRamp)
 {
+	//set state to home in
+		scrTargetObject();
 	movementLock=true;
 	maxSpeedNormal = abs(xspdReturned);
 	xspd = xspdReturned;

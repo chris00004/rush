@@ -31,3 +31,7 @@ alarmChooseAction = 0;
 isActive = false;
 direction = 0; 
 
+frame = 0;
+frameAlarm = 4;
+
+xscale=1;

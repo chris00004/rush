@@ -63,13 +63,13 @@ if (z>zFloor-24)
 }
 
 //check if walls are in the way
-if (place_meeting(x+xspd+1,y,objWall) || place_meeting(x+xspd-1,y,objWall)) wallToSide=true;
+if (place_meeting(x+xspd+1,y,objEnemyWall) || place_meeting(x+xspd-1,y,objEnemyWall)) wallToSide=true;
 else wallToSide=false;
 
-if (place_meeting(x+xspd+1,y,objWall)) wallToRight=true;
+if (place_meeting(x+xspd+1,y,objEnemyWall)) wallToRight=true;
 else wallToRight=false;
 
-if (place_meeting(x+xspd-1,y,objWall)) wallToLeft=true;
+if (place_meeting(x+xspd-1,y,objEnemyWall)) wallToLeft=true;
 else wallToLeft=false;
 
 //slide launching
@@ -96,9 +96,36 @@ switch(enemyState)
 		xDecceleration = xspd/75;
 		yDecceleration = yspd/75;
 		kickedMovementApplied=true;
+		
 	}
 	else
 	{
+		//rebound off enemies
+		for (var i = 0; i < instance_number(objEnemy); i++) 
+		{
+			var currentEnemy = instance_find(objEnemy, i); 
+			if (place_meeting(x, y, currentEnemy) && currentEnemy.reboundable) 
+			{
+				if (currentEnemy.isArmored) 
+				{
+					currentEnemy.armorHealth -= objPlayer.damage;
+					reboundable = false;
+				}
+				else if (grounded) {
+					currentEnemy.hp -= objPlayer.damage;
+					reboundable = false;
+					currentEnemy.xspd = self.xspd * 0.5;
+					currentEnemy.yspd = self.yspd * 0.5;
+					self.xspd*= -0.5;
+					self.yspd*=-0.5;
+					self.xDecceleration*= -1;
+					self.yDecceleration*= -1;
+					currentEnemy.xDecceleration = currentEnemy.xspd/80;
+					currentEnemy.yDecceleration = currentEnemy.yspd/80;
+				}
+			}
+		}
+		
 		//apply decceleration
 		xspd-=xDecceleration;
 		yspd-=yDecceleration;
@@ -111,8 +138,14 @@ switch(enemyState)
 		{
 			enemyState = EnemyState.Normal;
 			kickedMovementApplied=false;
+			
+			for (var i = 0; i < instance_number(objEnemy); i++) {
+			var currentEnemy = instance_find(objEnemy, i);
+			currentEnemy.reboundable = true;
+			}
 		}
 	}
+	break;
 	break;
 	
 	//SHOVED STATE
@@ -214,9 +247,9 @@ switch(enemyState)
 if (abs(xspd) > abs(yspd)) 
 {
     // Handle X collision first
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
@@ -234,9 +267,9 @@ if (abs(xspd) > abs(yspd))
     }
 
     // Then handle Y collision
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd), objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -252,9 +285,9 @@ if (abs(xspd) > abs(yspd))
 else 
 {
     // Handle Y collision first
-    if (place_meeting(x, y + yspd, objWall))
+    if (place_meeting(x, y + yspd, objEnemyWall))
     {
-        while (!place_meeting(x, y + sign(yspd), objWall))
+        while (!place_meeting(x, y + sign(yspd), objEnemyWall))
         {
             y += sign(yspd);
         }
@@ -268,9 +301,9 @@ else
     }
 
     // Then handle X collision
-    if (place_meeting(x + xspd, y, objWall))
+    if (place_meeting(x + xspd, y, objEnemyWall))
     {
-        while (!place_meeting(x + sign(xspd), y, objWall))
+        while (!place_meeting(x + sign(xspd), y, objEnemyWall))
         {
             x += sign(xspd);
         }
