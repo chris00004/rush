@@ -403,6 +403,12 @@ if (playerState == PlayerState.BasicAttack)
 {
 	alarmAttachToTarget--;
 	
+	if (closestTarget.hp<=0)
+	{
+		playerState=PlayerState.Normal;
+		movementLock=false;
+	}
+	
 	//make sure player stays attatched to target
 	tX = closestTarget.x;
 	tY = closestTarget.y;
