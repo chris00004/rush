@@ -59,6 +59,7 @@ draw_text(camX+16,camY+1,string(minutes)+":"+string(seconds));
 
 if (room==rmTutorialStage)
 {
+	/*
 // (X)
 if (objPlayer.inputActionHold) draw_set_color(c_red);
 else draw_set_color(c_white);
@@ -103,6 +104,7 @@ if (objPlayer.inputBoostHold) draw_set_color(c_red);
 else draw_set_color(c_white);
 draw_rectangle(camX+199,camY+102,camX+225,camY+120,false);
 draw_set_color(c_white);
+*/
 }
 
 draw_text(camX+viewWidth-80,camY+170,objPlayer.currentSpeed);

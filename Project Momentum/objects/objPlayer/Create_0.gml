@@ -1,4 +1,8 @@
-//audio_play_sound(sndTrailerMusic,0,false);
+if (room==rmTropicalRig) 
+{
+	audio_stop_sound(sndTrailerMusic);
+	audio_play_sound(sndTrailerMusic,0,false);
+}
 instance_create_layer(x,y,layer_get_id("player"),objPlayerHomingRadius);
 instance_create_layer(x,y,layer_get_id("player"),objPlayerHomingCone);
 instance_create_layer(x,y,layer_get_id("player"),objPlayerSlideRadius);

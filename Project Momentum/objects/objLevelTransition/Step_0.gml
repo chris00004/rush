@@ -1,16 +1,16 @@
 if (active)
 {
 	if (room==rmTutorialStage) room_goto(rmTropicalRig);
-	if (room==rmTropicalRig) room_goto(rmTutorialStage);
 }
 
 
 
 if (place_meeting(x,y,objPlayer))
 {
-	image_speed=1;
+	image_speed=0;
+	image_index=9;
+	if (room==rmTropicalRig) room_goto(rmThankYou);
 }
 else{
-	image_speed=0;
-	image_index=4;
+	image_speed=1;
 }
